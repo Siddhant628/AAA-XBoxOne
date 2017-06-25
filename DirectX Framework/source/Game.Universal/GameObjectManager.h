@@ -9,10 +9,10 @@ namespace DirectXGame
 {
 	class MoodySprite;
 
-	class SpriteDemoManager final : public DX::DrawableGameComponent
+	class GameObjectManager final : public DX::DrawableGameComponent
 	{
 	public:
-		SpriteDemoManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera, std::uint32_t spriteRowCount = 1, std::uint32_t spriteColumCount = 8);
+		GameObjectManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera, std::uint32_t spriteRowCount = 1, std::uint32_t spriteColumCount = 8);
 
 		const DirectX::XMFLOAT2& Position() const;
 		void SetPositon(const DirectX::XMFLOAT2& position);

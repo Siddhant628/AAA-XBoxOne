@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SpriteDemoManager.h"
+#include "GameObjectManager.h"
 
 using namespace std;
 using namespace DX;
@@ -8,13 +8,13 @@ using namespace Microsoft::WRL;
 
 namespace DirectXGame
 {
-	const DirectX::XMFLOAT2 SpriteDemoManager::SpriteScale = XMFLOAT2(3.0f, 3.0f);
-	const uint32_t SpriteDemoManager::SpriteCount = 8; // Sprites are arranged horizontally within the sprite sheet
-	const uint32_t SpriteDemoManager::MoodCount = 4; // Moods are arranged vertically within the sprite sheet
-	const XMFLOAT2 SpriteDemoManager::UVScalingFactor = XMFLOAT2(1.0f / SpriteCount, 1.0f / MoodCount);
-	const double SpriteDemoManager::MoodUpdateDelay = 0.5; // Delay between mood changes, in seconds
+	const DirectX::XMFLOAT2 GameObjectManager::SpriteScale = XMFLOAT2(3.0f, 3.0f);
+	const uint32_t GameObjectManager::SpriteCount = 8; // Sprites are arranged horizontally within the sprite sheet
+	const uint32_t GameObjectManager::MoodCount = 4; // Moods are arranged vertically within the sprite sheet
+	const XMFLOAT2 GameObjectManager::UVScalingFactor = XMFLOAT2(1.0f / SpriteCount, 1.0f / MoodCount);
+	const double GameObjectManager::MoodUpdateDelay = 0.5; // Delay between mood changes, in seconds
 
-	SpriteDemoManager::SpriteDemoManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
+	GameObjectManager::GameObjectManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
 		DrawableGameComponent(deviceResources, camera),
 		mLoadingComplete(false), mIndexCount(0),
 		mSpriteRowCount(spriteRowCount), mSpriteColumnCount(spriteColumCount),
@@ -23,17 +23,17 @@ namespace DirectXGame
 	{
 	}
 
-	const XMFLOAT2& SpriteDemoManager::Position() const
+	const XMFLOAT2& GameObjectManager::Position() const
 	{
 		return mPosition;
 	}
 
-	void SpriteDemoManager::SetPositon(const XMFLOAT2& position)
+	void GameObjectManager::SetPositon(const XMFLOAT2& position)
 	{
 		mPosition = position;
 	}
 
-	void SpriteDemoManager::CreateDeviceDependentResources()
+	void GameObjectManager::CreateDeviceDependentResources()
 	{
 		auto loadVSTask = ReadDataAsync(L"SpriteRendererVS.cso");
 		auto loadPSTask = ReadDataAsync(L"SpriteRendererPS.cso");
@@ -107,20 +107,21 @@ namespace DirectXGame
 			ThrowIfFailed(mDeviceResources->GetD3DDevice()->CreateBlendState(&blendStateDesc, mAlphaBlending.ReleaseAndGetAddressOf()));
 		});
 
+		// Load the sprite sheets after creating of pixel and vertex shader.
 		auto loadSpriteSheetAndCreateSpritesTask = (createPSTask && createVSTask).then([this]() {
 			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), L"Content\\Textures\\snoods_default.png", nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
 			InitializeVertices();
 			InitializeSprites();
 		});
 
-		// Once the cube is loaded, the object is ready to be rendered.
+		// Object is ready to be rendered.
 		loadSpriteSheetAndCreateSpritesTask.then([this]() {
 			mLoadingComplete = true;
 			mSpriteCountDistribution = uniform_int_distribution<uint32_t>(0U, static_cast<uint32_t>(mSprites.size()) - 1);
 		});
 	}
 
-	void SpriteDemoManager::ReleaseDeviceDependentResources()
+	void GameObjectManager::ReleaseDeviceDependentResources()
 	{
 		mLoadingComplete = false;
 		mVertexShader.Reset();
@@ -133,7 +134,7 @@ namespace DirectXGame
 		mTextureSampler.Reset();
 	}
 
-	void SpriteDemoManager::Update(const StepTimer& timer)
+	void GameObjectManager::Update(const StepTimer& timer)
 	{
 		if (!mLoadingComplete)
 		{
@@ -154,7 +155,7 @@ namespace DirectXGame
 		}
 	}
 
-	void SpriteDemoManager::Render(const StepTimer & timer)
+	void GameObjectManager::Render(const StepTimer & timer)
 	{
 		UNREFERENCED_PARAMETER(timer);
 
@@ -186,7 +187,7 @@ namespace DirectXGame
 		}
 	}
 
-	void SpriteDemoManager::DrawSprite(MoodySprite& sprite)
+	void GameObjectManager::DrawSprite(MoodySprite& sprite)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
 		
@@ -199,7 +200,7 @@ namespace DirectXGame
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
 	}
 
-	void SpriteDemoManager::InitializeVertices()
+	void GameObjectManager::InitializeVertices()
 	{
 		VertexPositionTexture vertices[] = 
 		{
@@ -237,7 +238,7 @@ namespace DirectXGame
 		ThrowIfFailed(mDeviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexSubResourceData, mIndexBuffer.ReleaseAndGetAddressOf()));
 	}
 
-	void SpriteDemoManager::InitializeSprites()
+	void GameObjectManager::InitializeSprites()
 	{	
 		const XMFLOAT2 neighborOffset(2.0f, 2.0f);
 		for (uint32_t column = 0; column < mSpriteColumnCount; ++column)		
@@ -254,7 +255,7 @@ namespace DirectXGame
 		}
 	}
 
-	void SpriteDemoManager::ChangeMood(MoodySprite& sprite)
+	void GameObjectManager::ChangeMood(MoodySprite& sprite)
 	{
 		MoodySprite::Moods mood = GetRandomMood();
 
@@ -264,7 +265,7 @@ namespace DirectXGame
 		sprite.SetTextureTransform(textureTransform);
 	}
 
-	MoodySprite::Moods SpriteDemoManager::GetRandomMood()
+	MoodySprite::Moods GameObjectManager::GetRandomMood()
 	{
 		static uniform_int_distribution<uint32_t> moodDistribution(static_cast<uint32_t>(MoodySprite::Moods::Neutral), static_cast<uint32_t>(MoodySprite::Moods::Angry));
 

@@ -50,4 +50,4 @@
 #include "Field.h"
 #include "FieldManager.h"
 #include "MoodySprite.h"
-#include "SpriteDemoManager.h"
+#include "GameObjectManager.h"

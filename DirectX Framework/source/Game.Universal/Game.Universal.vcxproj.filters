@@ -42,7 +42,7 @@
     <ClCompile Include="FieldManager.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="MoodySprite.cpp" />
-    <ClCompile Include="SpriteDemoManager.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -53,7 +53,7 @@
     <ClInclude Include="FieldManager.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="MoodySprite.h" />
-    <ClInclude Include="SpriteDemoManager.h" />
+    <ClInclude Include="GameObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">
