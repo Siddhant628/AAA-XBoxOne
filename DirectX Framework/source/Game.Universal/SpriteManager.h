@@ -3,7 +3,6 @@
 #include "DrawableGameComponent.h"
 #include "MatrixHelper.h"
 #include <vector>
-#include <random>
 
 namespace DirectXGame
 {
@@ -21,8 +20,6 @@ namespace DirectXGame
 		virtual void ReleaseDeviceDependentResources() override;
 		virtual void Update(const DX::StepTimer& timer) override;
 		virtual void Render(const DX::StepTimer& timer) override;
-
-		static const DirectX::XMFLOAT2 SpriteScale;
 
 	private:
 		struct VSCBufferPerObject
@@ -43,10 +40,7 @@ namespace DirectXGame
 		void InitializeVertices();
 		void InitializeSprites();
 
-		static const std::uint32_t SpriteCount;
-		static const std::uint32_t MoodCount;
 		static const DirectX::XMFLOAT2 UVScalingFactor;
-		static const double MoodUpdateDelay;
 
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> mPixelShader;
@@ -58,15 +52,12 @@ namespace DirectXGame
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> mTextureSampler;
 		Microsoft::WRL::ComPtr<ID3D11BlendState> mAlphaBlending;
 		VSCBufferPerObject mVSCBufferPerObjectData;
-		bool mLoadingComplete;
-		std::vector<std::shared_ptr<Sprite>> mSprites;
 		std::uint32_t mIndexCount;
+		bool mLoadingComplete;
+
+		std::vector<std::shared_ptr<Sprite>> mSprites;
 		std::uint32_t mSpriteRowCount;
 		std::uint32_t mSpriteColumnCount;
 		DirectX::XMFLOAT2 mPosition;
-		double mLastMoodUpdateTime;
-		std::random_device mRandomDevice;
-		std::default_random_engine mRandomGenerator;
-		std::uniform_int_distribution<uint32_t> mSpriteDistribution;
 	};
 }

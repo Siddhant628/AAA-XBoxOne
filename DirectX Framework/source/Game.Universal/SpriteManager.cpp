@@ -8,18 +8,13 @@ using namespace Microsoft::WRL;
 
 namespace DirectXGame
 {
-	const DirectX::XMFLOAT2 SpriteManager::SpriteScale = XMFLOAT2(3.0f, 3.0f);
-	const uint32_t SpriteManager::SpriteCount = 8; // Sprites are arranged horizontally within the sprite sheet
-	const uint32_t SpriteManager::MoodCount = 4; // Moods are arranged vertically within the sprite sheet
-	const XMFLOAT2 SpriteManager::UVScalingFactor = XMFLOAT2(1.0f / SpriteCount, 1.0f / MoodCount);
-	const double SpriteManager::MoodUpdateDelay = 0.5; // Delay between mood changes, in seconds
+	const XMFLOAT2 SpriteManager::UVScalingFactor = XMFLOAT2(1.0f / 8, 1.0f / 4);
 
 	SpriteManager::SpriteManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
 		DrawableGameComponent(deviceResources, camera),
 		mLoadingComplete(false), mIndexCount(0),
 		mSpriteRowCount(spriteRowCount), mSpriteColumnCount(spriteColumCount),
-		mPosition(0.0f, 0.0f), mRandomGenerator(mRandomDevice()),
-		mSpriteDistribution(0, SpriteCount - 1)
+		mPosition(0.0f, 0.0f)
 	{
 	}
 
@@ -232,10 +227,9 @@ namespace DirectXGame
 		{
 			for (uint32_t row = 0; row < mSpriteRowCount; ++row)
 			{
-				XMFLOAT2 position(mPosition.x + column * neighborOffset.x * SpriteScale.x, mPosition.y + row * neighborOffset.y * SpriteScale.y);
-				Transform2D transform(position, 0.0f, SpriteScale);
-				uint32_t spriteIndex = mSpriteDistribution(mRandomGenerator);
-				auto sprite = make_shared<Sprite>(spriteIndex, transform);
+				XMFLOAT2 position(mPosition.x + column * neighborOffset.x * 3, mPosition.y + row * neighborOffset.y * 3);
+				Transform2D transform(position, 0.0f, XMFLOAT2(3.0f, 3.0f));
+				auto sprite = make_shared<Sprite>(transform);
 				
 				XMFLOAT4X4 textureTransform;
 				XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * 2, UVScalingFactor.y * 1, 0.0f);
