@@ -49,5 +49,5 @@
 #include "BallManager.h"
 #include "Field.h"
 #include "FieldManager.h"
-#include "MoodySprite.h"
-#include "GameObjectManager.h"
+#include "Sprite.h"
+#include "SpriteManager.h"

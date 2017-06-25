@@ -47,8 +47,8 @@ namespace DirectXGame
 
 		const int32_t spriteRowCount = 12;
 		const int32_t spriteColumnCount = 15;
-		auto gameObjectManager = make_shared<GameObjectManager>(mDeviceResources, camera, spriteRowCount, spriteColumnCount);		
-		const XMFLOAT2 center((-spriteColumnCount + 1) * GameObjectManager::SpriteScale.x, (-spriteRowCount + 1) * GameObjectManager::SpriteScale.y);
+		auto gameObjectManager = make_shared<SpriteManager>(mDeviceResources, camera, spriteRowCount, spriteColumnCount);		
+		const XMFLOAT2 center((-spriteColumnCount + 1) * SpriteManager::SpriteScale.x, (-spriteRowCount + 1) * SpriteManager::SpriteScale.y);
 		gameObjectManager->SetPositon(center);
 		mComponents.push_back(gameObjectManager);
 

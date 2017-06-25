@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GameObjectManager.h"
+#include "SpriteManager.h"
 
 using namespace std;
 using namespace DX;
@@ -8,13 +8,13 @@ using namespace Microsoft::WRL;
 
 namespace DirectXGame
 {
-	const DirectX::XMFLOAT2 GameObjectManager::SpriteScale = XMFLOAT2(3.0f, 3.0f);
-	const uint32_t GameObjectManager::SpriteCount = 8; // Sprites are arranged horizontally within the sprite sheet
-	const uint32_t GameObjectManager::MoodCount = 4; // Moods are arranged vertically within the sprite sheet
-	const XMFLOAT2 GameObjectManager::UVScalingFactor = XMFLOAT2(1.0f / SpriteCount, 1.0f / MoodCount);
-	const double GameObjectManager::MoodUpdateDelay = 0.5; // Delay between mood changes, in seconds
+	const DirectX::XMFLOAT2 SpriteManager::SpriteScale = XMFLOAT2(3.0f, 3.0f);
+	const uint32_t SpriteManager::SpriteCount = 8; // Sprites are arranged horizontally within the sprite sheet
+	const uint32_t SpriteManager::MoodCount = 4; // Moods are arranged vertically within the sprite sheet
+	const XMFLOAT2 SpriteManager::UVScalingFactor = XMFLOAT2(1.0f / SpriteCount, 1.0f / MoodCount);
+	const double SpriteManager::MoodUpdateDelay = 0.5; // Delay between mood changes, in seconds
 
-	GameObjectManager::GameObjectManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
+	SpriteManager::SpriteManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
 		DrawableGameComponent(deviceResources, camera),
 		mLoadingComplete(false), mIndexCount(0),
 		mSpriteRowCount(spriteRowCount), mSpriteColumnCount(spriteColumCount),
@@ -23,17 +23,17 @@ namespace DirectXGame
 	{
 	}
 
-	const XMFLOAT2& GameObjectManager::Position() const
+	const XMFLOAT2& SpriteManager::Position() const
 	{
 		return mPosition;
 	}
 
-	void GameObjectManager::SetPositon(const XMFLOAT2& position)
+	void SpriteManager::SetPositon(const XMFLOAT2& position)
 	{
 		mPosition = position;
 	}
 
-	void GameObjectManager::CreateDeviceDependentResources()
+	void SpriteManager::CreateDeviceDependentResources()
 	{
 		auto loadVSTask = ReadDataAsync(L"SpriteRendererVS.cso");
 		auto loadPSTask = ReadDataAsync(L"SpriteRendererPS.cso");
@@ -117,11 +117,10 @@ namespace DirectXGame
 		// Object is ready to be rendered.
 		loadSpriteSheetAndCreateSpritesTask.then([this]() {
 			mLoadingComplete = true;
-			mSpriteCountDistribution = uniform_int_distribution<uint32_t>(0U, static_cast<uint32_t>(mSprites.size()) - 1);
 		});
 	}
 
-	void GameObjectManager::ReleaseDeviceDependentResources()
+	void SpriteManager::ReleaseDeviceDependentResources()
 	{
 		mLoadingComplete = false;
 		mVertexShader.Reset();
@@ -134,28 +133,16 @@ namespace DirectXGame
 		mTextureSampler.Reset();
 	}
 
-	void GameObjectManager::Update(const StepTimer& timer)
+	void SpriteManager::Update(const StepTimer& timer)
 	{
+		timer;
 		if (!mLoadingComplete)
 		{
 			return;
 		}
-
-		if (timer.GetTotalSeconds() > mLastMoodUpdateTime + MoodUpdateDelay)
-		{
-			mLastMoodUpdateTime = timer.GetTotalSeconds();
-
-			uint32_t spritesToChange = mSpriteCountDistribution(mRandomGenerator);
-			for (uint32_t i = 0; i < spritesToChange; ++i)
-			{
-				uint32_t spriteIndex = mSpriteCountDistribution(mRandomGenerator);
-				auto sprite = mSprites[spriteIndex];
-				ChangeMood(*sprite);
-			}
-		}
 	}
 
-	void GameObjectManager::Render(const StepTimer & timer)
+	void SpriteManager::Render(const StepTimer & timer)
 	{
 		UNREFERENCED_PARAMETER(timer);
 
@@ -187,7 +174,7 @@ namespace DirectXGame
 		}
 	}
 
-	void GameObjectManager::DrawSprite(MoodySprite& sprite)
+	void SpriteManager::DrawSprite(Sprite& sprite)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
 		
@@ -200,7 +187,7 @@ namespace DirectXGame
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
 	}
 
-	void GameObjectManager::InitializeVertices()
+	void SpriteManager::InitializeVertices()
 	{
 		VertexPositionTexture vertices[] = 
 		{
@@ -238,7 +225,7 @@ namespace DirectXGame
 		ThrowIfFailed(mDeviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexSubResourceData, mIndexBuffer.ReleaseAndGetAddressOf()));
 	}
 
-	void GameObjectManager::InitializeSprites()
+	void SpriteManager::InitializeSprites()
 	{	
 		const XMFLOAT2 neighborOffset(2.0f, 2.0f);
 		for (uint32_t column = 0; column < mSpriteColumnCount; ++column)		
@@ -246,29 +233,17 @@ namespace DirectXGame
 			for (uint32_t row = 0; row < mSpriteRowCount; ++row)
 			{
 				XMFLOAT2 position(mPosition.x + column * neighborOffset.x * SpriteScale.x, mPosition.y + row * neighborOffset.y * SpriteScale.y);
-				Transform2D transform(position, 0.0f, SpriteScale);								
+				Transform2D transform(position, 0.0f, SpriteScale);
 				uint32_t spriteIndex = mSpriteDistribution(mRandomGenerator);
-				auto sprite = make_shared<MoodySprite>(spriteIndex, transform);
-				ChangeMood(*sprite);
+				auto sprite = make_shared<Sprite>(spriteIndex, transform);
+				
+				XMFLOAT4X4 textureTransform;
+				XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * 2, UVScalingFactor.y * 1, 0.0f);
+				XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
+				sprite->SetTextureTransform(textureTransform);
+				
 				mSprites.push_back(move(sprite));
 			}
 		}
-	}
-
-	void GameObjectManager::ChangeMood(MoodySprite& sprite)
-	{
-		MoodySprite::Moods mood = GetRandomMood();
-
-		XMFLOAT4X4 textureTransform;
-		XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * sprite.SpriteIndex(), UVScalingFactor.y * static_cast<uint32_t>(mood), 0.0f);
-		XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
-		sprite.SetTextureTransform(textureTransform);
-	}
-
-	MoodySprite::Moods GameObjectManager::GetRandomMood()
-	{
-		static uniform_int_distribution<uint32_t> moodDistribution(static_cast<uint32_t>(MoodySprite::Moods::Neutral), static_cast<uint32_t>(MoodySprite::Moods::Angry));
-
-		return static_cast<MoodySprite::Moods>(moodDistribution(mRandomGenerator));
 	}
 }

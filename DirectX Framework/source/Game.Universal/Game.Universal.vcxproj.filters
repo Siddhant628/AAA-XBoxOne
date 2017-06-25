@@ -41,8 +41,8 @@
     <ClCompile Include="BallManager.cpp" />
     <ClCompile Include="FieldManager.cpp" />
     <ClCompile Include="Field.cpp" />
-    <ClCompile Include="MoodySprite.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -52,8 +52,8 @@
     <ClInclude Include="BallManager.h" />
     <ClInclude Include="FieldManager.h" />
     <ClInclude Include="Field.h" />
-    <ClInclude Include="MoodySprite.h" />
-    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

@@ -5,7 +5,7 @@
 
 namespace DirectXGame
 {
-	class MoodySprite final
+	class Sprite final
 	{
 	public:
 		enum class Moods
@@ -16,7 +16,7 @@ namespace DirectXGame
 			Angry
 		};
 
-		MoodySprite(std::uint32_t spriteIndex, const DX::Transform2D& transform, Moods mood = Moods::Neutral, const DirectX::XMFLOAT4X4& textureTransform = DX::MatrixHelper::Identity);
+		Sprite(std::uint32_t spriteIndex, const DX::Transform2D& transform, Moods mood = Moods::Neutral, const DirectX::XMFLOAT4X4& textureTransform = DX::MatrixHelper::Identity);
 
 		std::uint32_t SpriteIndex() const;
 		void SetSpriteIndex(const std::uint32_t spriteIndex);

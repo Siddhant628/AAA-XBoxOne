@@ -7,12 +7,12 @@
 
 namespace DirectXGame
 {
-	class MoodySprite;
+	class Sprite;
 
-	class GameObjectManager final : public DX::DrawableGameComponent
+	class SpriteManager final : public DX::DrawableGameComponent
 	{
 	public:
-		GameObjectManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera, std::uint32_t spriteRowCount = 1, std::uint32_t spriteColumCount = 8);
+		SpriteManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera, std::uint32_t spriteRowCount = 1, std::uint32_t spriteColumCount = 8);
 
 		const DirectX::XMFLOAT2& Position() const;
 		void SetPositon(const DirectX::XMFLOAT2& position);
@@ -39,11 +39,9 @@ namespace DirectXGame
 			{ }
 		};
 
-		void DrawSprite(MoodySprite& sprite);
+		void DrawSprite(Sprite& sprite);
 		void InitializeVertices();
 		void InitializeSprites();
-		void ChangeMood(MoodySprite& sprite);
-		MoodySprite::Moods GetRandomMood();
 
 		static const std::uint32_t SpriteCount;
 		static const std::uint32_t MoodCount;
@@ -61,7 +59,7 @@ namespace DirectXGame
 		Microsoft::WRL::ComPtr<ID3D11BlendState> mAlphaBlending;
 		VSCBufferPerObject mVSCBufferPerObjectData;
 		bool mLoadingComplete;
-		std::vector<std::shared_ptr<MoodySprite>> mSprites;
+		std::vector<std::shared_ptr<Sprite>> mSprites;
 		std::uint32_t mIndexCount;
 		std::uint32_t mSpriteRowCount;
 		std::uint32_t mSpriteColumnCount;
@@ -70,6 +68,5 @@ namespace DirectXGame
 		std::random_device mRandomDevice;
 		std::default_random_engine mRandomGenerator;
 		std::uniform_int_distribution<uint32_t> mSpriteDistribution;
-		std::uniform_int_distribution<uint32_t> mSpriteCountDistribution;
 	};
 }
