@@ -118,7 +118,7 @@ namespace DirectXGame
 
 		// Load the sprite sheets after creating of pixel and vertex shader.
 		auto loadSpriteSheetAndCreateSpritesTask = (createPSTask && createVSTask).then([this]() {
-			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpritePath.at(SpriteName::PlaneA).c_str(), nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
+			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpritePath.at(SpriteName::PlaneB).c_str(), nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
 			InitializeVertices();
 			InitializeSprites();
 		});
