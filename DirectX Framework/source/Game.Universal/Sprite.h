@@ -11,6 +11,7 @@ namespace DirectXGame
 	class Sprite final
 	{
 		friend class GameObject;
+		friend class SpriteManager;
 	public:
 		Sprite(const DX::Transform2D& transform = DX::Transform2D(), const DirectX::XMFLOAT4X4& textureTransform = DX::MatrixHelper::Identity);
 		/**

@@ -10,7 +10,8 @@ namespace DirectXGame
 {
 	Sprite::Sprite(const Transform2D & transform, const XMFLOAT4X4& textureTransform) :
 		mTransform(transform),
-		mTextureTransform(textureTransform)
+		mTextureTransform(textureTransform),
+		mSpriteName(SpriteName::Background)
 	{
 		GameManager::GetSpriteManager()->Register(*this);
 	}

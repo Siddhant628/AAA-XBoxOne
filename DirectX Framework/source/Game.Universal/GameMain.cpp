@@ -3,6 +3,7 @@
 #include "SpriteManager.h"
 #include "GameObjectManager.h"
 #include "GameManager.h"
+#include "GameObject.h"
 
 using namespace DX;
 using namespace std;
@@ -51,10 +52,19 @@ namespace DirectXGame
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);
 
 		GameObjectManager::GetInstance()->Initialize();
+		
 		GameManager::GetInstance()->Initialize();
-		IntializeResources();
-
 		GameManager::SetSpriteManager(*mSpriteManager);
+		
+		GameObject* object2 = new GameObject();
+		object2->AttachSprite();
+		object2->GetSprite()->SetSpriteName(SpriteName::PlaneA);
+
+		GameObject* object = new GameObject();
+		object->AttachSprite();
+
+		
+		IntializeResources();
 	}
 
 	GameMain::~GameMain()

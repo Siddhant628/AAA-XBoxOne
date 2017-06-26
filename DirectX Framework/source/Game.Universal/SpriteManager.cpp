@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SpriteManager.h"
+#include "GameObject.h"
 
 using namespace std;
 using namespace DX;
@@ -157,6 +158,7 @@ namespace DirectXGame
 		{
 			return;
 		}
+		ClearDeleteQueue();
 	}
 
 	void SpriteManager::Render(const StepTimer & timer)
@@ -181,12 +183,12 @@ namespace DirectXGame
 		direct3DDeviceContext->VSSetShader(mVertexShader.Get(), nullptr, 0);
 		direct3DDeviceContext->PSSetShader(mPixelShader.Get(), nullptr, 0);
 		direct3DDeviceContext->VSSetConstantBuffers(0, 1, mVSCBufferPerObject.GetAddressOf());
-		direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(SpriteName::Background).GetAddressOf());
 		direct3DDeviceContext->PSSetSamplers(0, 1, mTextureSampler.GetAddressOf());
 		direct3DDeviceContext->OMSetBlendState(mAlphaBlending.Get(), 0, 0xFFFFFFFF);
 
 		for (const auto& sprite : mSprites)
 		{
+			direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(sprite->GetSpriteName()).GetAddressOf());
 			DrawSprite(*sprite);
 		}
 	}
@@ -252,7 +254,6 @@ namespace DirectXGame
 		ThrowIfFailed(mDeviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexSubResourceData, mIndexBuffer.ReleaseAndGetAddressOf()));
 	}
 
-	// Initialize sprites based on the registered sprites on construction
 	void SpriteManager::InitializeSprites()
 	{
 		//const XMFLOAT2 neighborOffset(2.0f, 2.0f);
@@ -272,16 +273,23 @@ namespace DirectXGame
 		//		mSprites.push_back(move(sprite));
 		//	}
 		//}
-		Transform2D transform;
-		transform.SetScale(sSpriteData.at(SpriteName::Background).DefaultScale);
-		auto sprite = new Sprite(transform);
+		//Transform2D transform;
+		//transform.SetScale(sSpriteData.at(SpriteName::Background).DefaultScale);
+		//auto sprite = new Sprite(transform);
 
 		//XMFLOAT4X4 textureTransform;
 		//XMMATRIX textureTransformMatrix = XMMatrixScaling(1.0f, 1.0f, 0);
 		//XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
 
 		//sprite->SetTextureTransform(textureTransform);
-		mSprites.push_back(move(sprite));
+		//mSprites.push_back(move(sprite));
+
+		for (auto it = mSprites.begin(); it != mSprites.end(); ++it)
+		{
+			Transform2D transform;
+			transform.SetScale(sSpriteData.at((*it)->GetSpriteName()).DefaultScale);
+			(*it)->SetTransform(transform);
+		}
 	}
 
 	void SpriteManager::ClearDeleteQueue()
