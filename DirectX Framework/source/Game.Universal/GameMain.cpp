@@ -19,7 +19,7 @@ namespace DirectXGame
 		// Register to be notified if the Device is lost or recreated
 		mDeviceResources->RegisterDeviceNotify(this);
 
-		auto camera = make_shared<OrthographicCamera>(mDeviceResources);
+		auto camera = make_shared<OrthographicCamera>(mDeviceResources, 1024.0f, 768.0f);
 		mComponents.push_back(camera);
 		camera->SetPosition(0, 0, 1);
 
@@ -38,22 +38,10 @@ namespace DirectXGame
 		auto fpsTextRenderer = make_shared<FpsTextRenderer>(mDeviceResources);
 		mComponents.push_back(fpsTextRenderer);
 
-		//auto fieldManager = make_shared<FieldManager>(mDeviceResources, camera);
-		//mComponents.push_back(fieldManager);
-
-		//auto ballManager = make_shared<BallManager>(mDeviceResources, camera);
-		//ballManager->SetActiveField(fieldManager->ActiveField());
-		//mComponents.push_back(ballManager);		
-
-		const int32_t spriteRowCount = 12;
-		const int32_t spriteColumnCount = 15;
-		auto gameObjectManager = make_shared<SpriteManager>(mDeviceResources, camera, spriteRowCount, spriteColumnCount);
-		mComponents.push_back(gameObjectManager);
-		
-		//XMFLOAT2 center(-47, 0);
-		//gameObjectManager->SetPositon(center);
-
-
+		auto spriteManager = make_shared<SpriteManager>(mDeviceResources, camera);
+		//XMFLOAT2 center(-512, 0);
+		//spriteManager->SetPositon(center);
+		mComponents.push_back(spriteManager);
 
 		mTimer.SetFixedTimeStep(true);
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);

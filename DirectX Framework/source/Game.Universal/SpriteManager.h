@@ -11,7 +11,6 @@ namespace DirectXGame
 
 	enum class SpriteName
 	{
-		Invalid,
 		Background,
 		PlaneA,
 		PlaneB,
@@ -26,7 +25,7 @@ namespace DirectXGame
 	class SpriteManager final : public DX::DrawableGameComponent
 	{
 	public:
-		SpriteManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera, std::uint32_t spriteRowCount = 1, std::uint32_t spriteColumCount = 8);
+		SpriteManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera);
 
 		const DirectX::XMFLOAT2& Position() const;
 		void SetPositon(const DirectX::XMFLOAT2& position);
@@ -51,11 +50,17 @@ namespace DirectXGame
 			{ }
 		};
 
+		struct SpriteData
+		{
+			std::wstring SpritePath;
+			DirectX::XMFLOAT2 DefaultScale;
+		};
+
 		void DrawSprite(Sprite& sprite);
 		void InitializeVertices();
 		void InitializeSprites();
 
-		static const DirectX::XMFLOAT2 UVScalingFactor;
+		
 
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> mPixelShader;
@@ -63,7 +68,6 @@ namespace DirectXGame
 		Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> mIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> mVSCBufferPerObject;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mSpriteSheet;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> mTextureSampler;
 		Microsoft::WRL::ComPtr<ID3D11BlendState> mAlphaBlending;
 		VSCBufferPerObject mVSCBufferPerObjectData;
@@ -71,10 +75,11 @@ namespace DirectXGame
 		bool mLoadingComplete;
 
 		std::vector<std::shared_ptr<Sprite>> mSprites;
-		std::uint32_t mSpriteRowCount;
-		std::uint32_t mSpriteColumnCount;
 		DirectX::XMFLOAT2 mPosition;
 
-		const static std::map<SpriteName, std::wstring> sSpritePath;
+		static std::map<SpriteName, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> sSpriteSheets;
+
+	public:
+		const static std::map<SpriteName, SpriteData> sSpriteData;
 	};
 }

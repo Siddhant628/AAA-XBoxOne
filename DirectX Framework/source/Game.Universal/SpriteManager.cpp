@@ -8,25 +8,25 @@ using namespace Microsoft::WRL;
 
 namespace DirectXGame
 {
-	const XMFLOAT2 SpriteManager::UVScalingFactor = XMFLOAT2(1.0f / 8, 1.0f / 4);
-	const std::map<SpriteName, std::wstring> SpriteManager::sSpritePath =
+	const std::map<SpriteName, SpriteManager::SpriteData> SpriteManager::sSpriteData =
 	{
-		{SpriteName::Background,	L"Content\\Textures\\Background.png"},
-		{SpriteName::Bullet,		L"Content\\Textures\\Bullet.png"},
-		{SpriteName::GameEnd,		L"Content\\Textures\\GameEnd.png"},
-		{SpriteName::LivesA,		L"Content\\Textures\\LivesA.png"},
-		{SpriteName::LivesB,		L"Content\\Textures\\LivesB.png"},
-		{SpriteName::PlaneA,		L"Content\\Textures\\PlaneA.png"},
-		{SpriteName::PlaneB,		L"Content\\Textures\\PlaneB.png"},
-		{SpriteName::Turret,		L"Content\\Textures\\Turret.png"},
-		{SpriteName::TurretBase,	L"Content\\Textures\\TurretBase.png"}
+		{SpriteName::Background,	{ L"Content\\Textures\\Background.png",		XMFLOAT2(512, 384) } },
+		{SpriteName::Bullet,		{ L"Content\\Textures\\Bullet.png" ,		XMFLOAT2(3, 3) } },
+		{SpriteName::GameEnd,		{ L"Content\\Textures\\GameEnd.png" ,		XMFLOAT2(512, 250) } },
+		{SpriteName::LivesA,		{ L"Content\\Textures\\LivesA.png" ,		XMFLOAT2(10, 10) } },
+		{SpriteName::LivesB,		{ L"Content\\Textures\\LivesB.png" ,		XMFLOAT2(10, 10) } },
+		{SpriteName::PlaneA,		{ L"Content\\Textures\\PlaneA.png" ,		XMFLOAT2(50, 28) } },
+		{SpriteName::PlaneB,		{ L"Content\\Textures\\PlaneB.png" ,		XMFLOAT2(50, 24) } },
+		{SpriteName::Turret,		{ L"Content\\Textures\\Turret.png" ,		XMFLOAT2(22, 39) } },
+		{SpriteName::TurretBase,	{ L"Content\\Textures\\TurretBase.png" ,	XMFLOAT2(29, 27) } }
 	};
 
-	// TODO Update constructor
-	SpriteManager::SpriteManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
+	std::map<SpriteName, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> SpriteManager::sSpriteSheets;
+
+
+	SpriteManager::SpriteManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera) :
 		DrawableGameComponent(deviceResources, camera),
 		mLoadingComplete(false), mIndexCount(0),
-		mSpriteRowCount(spriteRowCount), mSpriteColumnCount(spriteColumCount),
 		mPosition(0.0f, 0.0f)
 	{
 	}
@@ -118,7 +118,12 @@ namespace DirectXGame
 
 		// Load the sprite sheets after creating of pixel and vertex shader.
 		auto loadSpriteSheetAndCreateSpritesTask = (createPSTask && createVSTask).then([this]() {
-			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpritePath.at(SpriteName::PlaneB).c_str(), nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
+			
+			for(std::int32_t spriteName = static_cast<std::int32_t>(SpriteName::Background); spriteName < static_cast<std::int32_t>(SpriteName::GameEnd) + 1; ++spriteName)
+			{
+				CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpriteData.at(static_cast<SpriteName>(spriteName)).SpritePath.c_str(), nullptr, sSpriteSheets[static_cast<SpriteName>(spriteName)].ReleaseAndGetAddressOf());
+			}
+
 			InitializeVertices();
 			InitializeSprites();
 		});
@@ -138,7 +143,10 @@ namespace DirectXGame
 		mVertexBuffer.Reset();
 		mIndexBuffer.Reset();
 		mVSCBufferPerObject.Reset();
-		mSpriteSheet.Reset();
+		for (std::int32_t spriteName = static_cast<std::int32_t>(SpriteName::Background); spriteName != static_cast<std::int32_t>(SpriteName::GameEnd); ++spriteName)
+		{
+			sSpriteSheets.at(static_cast<SpriteName>(spriteName)).Reset();
+		}
 		mTextureSampler.Reset();
 	}
 
@@ -173,7 +181,7 @@ namespace DirectXGame
 		direct3DDeviceContext->VSSetShader(mVertexShader.Get(), nullptr, 0);
 		direct3DDeviceContext->PSSetShader(mPixelShader.Get(), nullptr, 0);
 		direct3DDeviceContext->VSSetConstantBuffers(0, 1, mVSCBufferPerObject.GetAddressOf());
-		direct3DDeviceContext->PSSetShaderResources(0, 1, mSpriteSheet.GetAddressOf());
+		direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(SpriteName::Background).GetAddressOf());
 		direct3DDeviceContext->PSSetSamplers(0, 1, mTextureSampler.GetAddressOf());
 		direct3DDeviceContext->OMSetBlendState(mAlphaBlending.Get(), 0, 0xFFFFFFFF);
 
@@ -186,11 +194,11 @@ namespace DirectXGame
 	void SpriteManager::DrawSprite(Sprite& sprite)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
-		
+
 		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * mCamera->ViewProjectionMatrix());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.WorldViewProjection, wvp);
 		XMMATRIX textureTransform = XMLoadFloat4x4(&sprite.TextureTransform());
-		XMStoreFloat4x4(&mVSCBufferPerObjectData.TextureTransform, XMMatrixTranspose(textureTransform));		 
+		XMStoreFloat4x4(&mVSCBufferPerObjectData.TextureTransform, XMMatrixTranspose(textureTransform));
 		direct3DDeviceContext->UpdateSubresource(mVSCBufferPerObject.Get(), 0, nullptr, &mVSCBufferPerObjectData, 0, 0);
 
 		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
@@ -198,7 +206,7 @@ namespace DirectXGame
 
 	void SpriteManager::InitializeVertices()
 	{
-		VertexPositionTexture vertices[] = 
+		VertexPositionTexture vertices[] =
 		{
 			VertexPositionTexture(XMFLOAT4(-1.0f, -1.0f, 0.0f, 1.0f), XMFLOAT2(0.0f, 1.0f)),
 			VertexPositionTexture(XMFLOAT4(-1.0f, 1.0f, 0.0f, 1.0f), XMFLOAT2(0.0f, 0.0f)),
@@ -236,23 +244,33 @@ namespace DirectXGame
 
 	// Initialize sprites based on the registered sprites on construction
 	void SpriteManager::InitializeSprites()
-	{	
-		const XMFLOAT2 neighborOffset(2.0f, 2.0f);
-		for (uint32_t column = 0; column < mSpriteColumnCount; ++column)		
-		{
-			for (uint32_t row = 0; row < mSpriteRowCount; ++row)
-			{
-				XMFLOAT2 position(mPosition.x + column * neighborOffset.x * 3, mPosition.y + row * neighborOffset.y * 3);
-				Transform2D transform(position, 0.0f, XMFLOAT2(3.0f, 3.0f));
-				auto sprite = make_shared<Sprite>(transform);
-				
-				XMFLOAT4X4 textureTransform;
-				XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * 2, UVScalingFactor.y * 1, 0.0f);
-				XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
-				sprite->SetTextureTransform(textureTransform);
-				
-				mSprites.push_back(move(sprite));
-			}
-		}
+	{
+		//const XMFLOAT2 neighborOffset(2.0f, 2.0f);
+		//for (uint32_t column = 0; column < mSpriteColumnCount; ++column)		
+		//{
+		//	for (uint32_t row = 0; row < mSpriteRowCount; ++row)
+		//	{
+		//		XMFLOAT2 position(mPosition.x + column * neighborOffset.x * 3, mPosition.y + row * neighborOffset.y * 3);
+		//		Transform2D transform(position, 0.0f, XMFLOAT2(3.0f, 3.0f));
+		//		auto sprite = make_shared<Sprite>(transform);
+		//		
+		//		XMFLOAT4X4 textureTransform;
+		//		XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * 2, UVScalingFactor.y * 1, 0.0f);
+		//		XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
+		//		sprite->SetTextureTransform(textureTransform);
+		//		
+		//		mSprites.push_back(move(sprite));
+		//	}
+		//}
+		Transform2D transform;
+		transform.SetScale(sSpriteData.at(SpriteName::Background).DefaultScale);
+		auto sprite = make_shared<Sprite>(transform);
+
+		//XMFLOAT4X4 textureTransform;
+		//XMMATRIX textureTransformMatrix = XMMatrixScaling(1.0f, 1.0f, 0);
+		//XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
+
+		//sprite->SetTextureTransform(textureTransform);
+		mSprites.push_back(move(sprite));
 	}
 }
