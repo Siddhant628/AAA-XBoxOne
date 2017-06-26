@@ -49,6 +49,11 @@ namespace DirectXGame
 		const int32_t spriteColumnCount = 15;
 		auto gameObjectManager = make_shared<SpriteManager>(mDeviceResources, camera, spriteRowCount, spriteColumnCount);
 		mComponents.push_back(gameObjectManager);
+		
+		//XMFLOAT2 center(-47, 0);
+		//gameObjectManager->SetPositon(center);
+
+
 
 		mTimer.SetFixedTimeStep(true);
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);

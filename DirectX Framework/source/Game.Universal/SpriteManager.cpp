@@ -9,7 +9,20 @@ using namespace Microsoft::WRL;
 namespace DirectXGame
 {
 	const XMFLOAT2 SpriteManager::UVScalingFactor = XMFLOAT2(1.0f / 8, 1.0f / 4);
+	const std::map<SpriteName, std::wstring> SpriteManager::sSpritePath =
+	{
+		{SpriteName::Background,	L"Content\\Textures\\Background.png"},
+		{SpriteName::Bullet,		L"Content\\Textures\\Bullet.png"},
+		{SpriteName::GameEnd,		L"Content\\Textures\\GameEnd.png"},
+		{SpriteName::LivesA,		L"Content\\Textures\\LivesA.png"},
+		{SpriteName::LivesB,		L"Content\\Textures\\LivesB.png"},
+		{SpriteName::PlaneA,		L"Content\\Textures\\PlaneA.png"},
+		{SpriteName::PlaneB,		L"Content\\Textures\\PlaneB.png"},
+		{SpriteName::Turret,		L"Content\\Textures\\Turret.png"},
+		{SpriteName::TurretBase,	L"Content\\Textures\\TurretBase.png"}
+	};
 
+	// TODO Update constructor
 	SpriteManager::SpriteManager(const shared_ptr<DX::DeviceResources>& deviceResources, const shared_ptr<Camera>& camera, uint32_t spriteRowCount, uint32_t spriteColumCount) :
 		DrawableGameComponent(deviceResources, camera),
 		mLoadingComplete(false), mIndexCount(0),
@@ -28,6 +41,7 @@ namespace DirectXGame
 		mPosition = position;
 	}
 
+	// TODO Use a static hashmap to load all the sprites
 	void SpriteManager::CreateDeviceDependentResources()
 	{
 		auto loadVSTask = ReadDataAsync(L"SpriteRendererVS.cso");
@@ -104,7 +118,7 @@ namespace DirectXGame
 
 		// Load the sprite sheets after creating of pixel and vertex shader.
 		auto loadSpriteSheetAndCreateSpritesTask = (createPSTask && createVSTask).then([this]() {
-			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), L"Content\\Textures\\snoods_default.png", nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
+			ThrowIfFailed(CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpritePath.at(SpriteName::PlaneA).c_str(), nullptr, mSpriteSheet.ReleaseAndGetAddressOf()));			
 			InitializeVertices();
 			InitializeSprites();
 		});
@@ -220,6 +234,7 @@ namespace DirectXGame
 		ThrowIfFailed(mDeviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexSubResourceData, mIndexBuffer.ReleaseAndGetAddressOf()));
 	}
 
+	// Initialize sprites based on the registered sprites on construction
 	void SpriteManager::InitializeSprites()
 	{	
 		const XMFLOAT2 neighborOffset(2.0f, 2.0f);

@@ -3,10 +3,25 @@
 #include "DrawableGameComponent.h"
 #include "MatrixHelper.h"
 #include <vector>
+#include <map>
 
 namespace DirectXGame
 {
 	class Sprite;
+
+	enum class SpriteName
+	{
+		Invalid,
+		Background,
+		PlaneA,
+		PlaneB,
+		Bullet,
+		Turret,
+		TurretBase,
+		LivesA,
+		LivesB,
+		GameEnd
+	};
 
 	class SpriteManager final : public DX::DrawableGameComponent
 	{
@@ -59,5 +74,7 @@ namespace DirectXGame
 		std::uint32_t mSpriteRowCount;
 		std::uint32_t mSpriteColumnCount;
 		DirectX::XMFLOAT2 mPosition;
+
+		const static std::map<SpriteName, std::wstring> sSpritePath;
 	};
 }

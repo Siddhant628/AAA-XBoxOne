@@ -54,12 +54,40 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Content\Textures\snoods_default.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Bullet.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\PlaneA.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\PlaneB.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Turret.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\TurretBase.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Background.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\GameEnd.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\LivesA.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\LivesB.png">
       <Filter>Content\Textures</Filter>
     </Image>
   </ItemGroup>
@@ -83,5 +111,8 @@
     <FxCompile Include="Content\Shaders\SpriteRendererPS.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.Universal.rc" />
   </ItemGroup>
 </Project>

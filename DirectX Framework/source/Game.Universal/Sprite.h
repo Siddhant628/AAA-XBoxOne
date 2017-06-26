@@ -19,5 +19,6 @@ namespace DirectXGame
 	private:
 		DirectX::XMFLOAT4X4 mTextureTransform;
 		DX::Transform2D mTransform;
+
 	};
 }

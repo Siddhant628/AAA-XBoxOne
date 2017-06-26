@@ -240,7 +240,16 @@
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Image Include="Assets\StoreLogo.png" />
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Image Include="Content\Textures\Background.png" />
+    <Image Include="Content\Textures\Bullet.png" />
+    <Image Include="Content\Textures\GameEnd.png" />
+    <Image Include="Content\Textures\LivesA.png" />
+    <Image Include="Content\Textures\LivesB.png" />
+    <Image Include="Content\Textures\PlaneA.png" />
+    <Image Include="Content\Textures\PlaneB.png" />
     <Image Include="Content\Textures\snoods_default.png" />
+    <Image Include="Content\Textures\Turret.png" />
+    <Image Include="Content\Textures\TurretBase.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -250,6 +259,7 @@
     <ClInclude Include="FieldManager.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
   </ItemGroup>
@@ -316,6 +326,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.Universal.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
