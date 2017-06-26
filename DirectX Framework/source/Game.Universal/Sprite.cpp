@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
 
 using namespace DX;
 using namespace DirectX;
@@ -30,5 +31,25 @@ namespace DirectXGame
 	void Sprite::SetTextureTransform(const XMFLOAT4X4& transform)
 	{
 		mTextureTransform = transform;
+	}
+
+	const SpriteName Sprite::GetSpriteName() const
+	{
+		return mSpriteName;
+	}
+
+	void Sprite::SetSpriteName(SpriteName spriteName)
+	{
+		mSpriteName = spriteName;
+	}
+	
+	const GameObject* Sprite::GetOwner() const
+	{
+		return mOwnerObject;
+	}
+
+	void Sprite::SetOwner(const GameObject& object)
+	{
+		mOwnerObject = &object;
 	}
 }

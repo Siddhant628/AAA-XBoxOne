@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ball.h"
+#include "BallManager.h"
 
 using namespace DirectX;
 using namespace DX;

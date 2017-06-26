@@ -50,4 +50,3 @@
 #include "Field.h"
 #include "FieldManager.h"
 #include "Sprite.h"
-#include "SpriteManager.h"

@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "GameMain.h"
+#include "SpriteManager.h"
 
 using namespace DX;
 using namespace std;
