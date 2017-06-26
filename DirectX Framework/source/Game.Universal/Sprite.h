@@ -13,6 +13,11 @@ namespace DirectXGame
 		friend class GameObject;
 	public:
 		Sprite(const DX::Transform2D& transform = DX::Transform2D(), const DirectX::XMFLOAT4X4& textureTransform = DX::MatrixHelper::Identity);
+		/**
+		* Destructor.
+		* Unregisters the sprite from Sprite Manager.
+		*/
+		~Sprite();
 
 		const DX::Transform2D& Transform() const;
 		void SetTransform(const DX::Transform2D& transform);

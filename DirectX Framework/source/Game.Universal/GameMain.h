@@ -16,6 +16,8 @@ namespace DX
 // Renders Direct2D and 3D content on the screen.
 namespace DirectXGame
 {
+	class SpriteManager;
+
 	class GameMain : public DX::IDeviceNotify
 	{
 	public:
@@ -37,5 +39,6 @@ namespace DirectXGame
 		std::shared_ptr<DX::KeyboardComponent> mKeyboard;
 		std::shared_ptr<DX::MouseComponent> mMouse;
 		std::shared_ptr<DX::GamePadComponent> mGamePad;
+		std::shared_ptr<SpriteManager> mSpriteManager;
 	};
 }

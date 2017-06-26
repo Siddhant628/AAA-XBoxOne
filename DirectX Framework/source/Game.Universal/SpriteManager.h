@@ -35,6 +35,14 @@ namespace DirectXGame
 		virtual void Update(const DX::StepTimer& timer) override;
 		virtual void Render(const DX::StepTimer& timer) override;
 
+		/**
+		* Register the sprite to the sprite manager.
+		*/
+		void Register(Sprite& sprite);
+		/**
+		* Unregister the sprite from the sprite manager.
+		*/
+		void Unregister(Sprite& sprite);
 	private:
 		struct VSCBufferPerObject
 		{
@@ -60,7 +68,6 @@ namespace DirectXGame
 		void InitializeVertices();
 		void InitializeSprites();
 
-		
 
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> mPixelShader;
@@ -74,7 +81,13 @@ namespace DirectXGame
 		std::uint32_t mIndexCount;
 		bool mLoadingComplete;
 
-		std::vector<std::shared_ptr<Sprite>> mSprites;
+		/**
+		* Delete the sprites which were queued for deletion in previous frame.
+		*/
+		void ClearDeleteQueue();
+
+		std::vector<Sprite*> mSprites;
+		std::vector<Sprite*> mDeleteQueue;
 		DirectX::XMFLOAT2 mPosition;
 
 		static std::map<SpriteName, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> sSpriteSheets;

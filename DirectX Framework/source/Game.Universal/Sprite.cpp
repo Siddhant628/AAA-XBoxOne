@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Sprite.h"
 #include "SpriteManager.h"
+#include "GameManager.h"
 
 using namespace DX;
 using namespace DirectX;
@@ -11,6 +12,12 @@ namespace DirectXGame
 		mTransform(transform),
 		mTextureTransform(textureTransform)
 	{
+		GameManager::GetSpriteManager()->Register(*this);
+	}
+
+	Sprite::~Sprite()
+	{
+		GameManager::GetSpriteManager()->Unregister(*this);
 	}
 
 	const Transform2D& Sprite::Transform() const

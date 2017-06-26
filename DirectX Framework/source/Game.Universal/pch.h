@@ -45,8 +45,4 @@
 #include "GamePadComponent.h"
 
 // Local
-#include "Ball.h"
-#include "BallManager.h"
-#include "Field.h"
-#include "FieldManager.h"
 #include "Sprite.h"

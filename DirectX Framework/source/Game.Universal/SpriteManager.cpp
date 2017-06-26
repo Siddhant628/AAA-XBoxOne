@@ -191,6 +191,16 @@ namespace DirectXGame
 		}
 	}
 
+	void SpriteManager::Register(Sprite& sprite)
+	{
+		mSprites.push_back(&sprite);
+	}
+
+	void SpriteManager::Unregister(Sprite& sprite)
+	{
+		mDeleteQueue.push_back(&sprite);
+	}
+
 	void SpriteManager::DrawSprite(Sprite& sprite)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
@@ -264,7 +274,7 @@ namespace DirectXGame
 		//}
 		Transform2D transform;
 		transform.SetScale(sSpriteData.at(SpriteName::Background).DefaultScale);
-		auto sprite = make_shared<Sprite>(transform);
+		auto sprite = new Sprite(transform);
 
 		//XMFLOAT4X4 textureTransform;
 		//XMMATRIX textureTransformMatrix = XMMatrixScaling(1.0f, 1.0f, 0);
@@ -272,5 +282,16 @@ namespace DirectXGame
 
 		//sprite->SetTextureTransform(textureTransform);
 		mSprites.push_back(move(sprite));
+	}
+
+	void SpriteManager::ClearDeleteQueue()
+	{
+		std::vector<Sprite*>::iterator end = mDeleteQueue.end();
+		for (auto it = mDeleteQueue.begin(); it != end; ++it)
+		{
+			auto itDelete = std::find(mSprites.begin(), mSprites.end(), *it);
+			mSprites.erase(itDelete);
+		}
+		mDeleteQueue.clear();
 	}
 }

@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "GameMain.h"
 #include "SpriteManager.h"
+#include "GameObjectManager.h"
+#include "GameManager.h"
 
 using namespace DX;
 using namespace std;
@@ -20,6 +22,9 @@ namespace DirectXGame
 		// Register to be notified if the Device is lost or recreated
 		mDeviceResources->RegisterDeviceNotify(this);
 
+		GameObjectManager::CreateInstance();
+		GameManager::CreateInstance();
+		
 		auto camera = make_shared<OrthographicCamera>(mDeviceResources, 1024.0f, 768.0f);
 		mComponents.push_back(camera);
 		camera->SetPosition(0, 0, 1);
@@ -39,15 +44,17 @@ namespace DirectXGame
 		auto fpsTextRenderer = make_shared<FpsTextRenderer>(mDeviceResources);
 		mComponents.push_back(fpsTextRenderer);
 
-		auto spriteManager = make_shared<SpriteManager>(mDeviceResources, camera);
-		//XMFLOAT2 center(-512, 0);
-		//spriteManager->SetPositon(center);
-		mComponents.push_back(spriteManager);
+		mSpriteManager = make_shared<SpriteManager>(mDeviceResources, camera);
+		mComponents.push_back(mSpriteManager);
 
 		mTimer.SetFixedTimeStep(true);
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);
 
+		GameObjectManager::GetInstance()->Initialize();
+		GameManager::GetInstance()->Initialize();
 		IntializeResources();
+
+		GameManager::SetSpriteManager(*mSpriteManager);
 	}
 
 	GameMain::~GameMain()
@@ -72,8 +79,10 @@ namespace DirectXGame
 		{
 			for (auto& component : mComponents)
 			{
-				component->Update(mTimer);
+				component->Update(mTimer);	
 			}
+			GameObjectManager::GetInstance()->Update(mTimer);
+			GameManager::GetInstance()->Update(mTimer);
 
 			if (mKeyboard->WasKeyPressedThisFrame(Keys::Escape) ||
 				mMouse->WasButtonPressedThisFrame(MouseButtons::Middle) ||
@@ -123,6 +132,9 @@ namespace DirectXGame
 	// Notifies renderers that device resources need to be released.
 	void GameMain::OnDeviceLost()
 	{
+		GameObjectManager::GetInstance()->Shutdown();
+		GameManager::GetInstance()->Shutdown();
+
 		for (auto& component : mComponents)
 		{
 			component->ReleaseDeviceDependentResources();
@@ -132,6 +144,11 @@ namespace DirectXGame
 	// Notifies renderers that device resources may now be recreated.
 	void GameMain::OnDeviceRestored()
 	{
+		GameObjectManager::CreateInstance();
+		
+		GameManager::CreateInstance();
+		GameManager::SetSpriteManager(*mSpriteManager);
+
 		IntializeResources();
 	}
 
