@@ -54,6 +54,10 @@ namespace DirectXGame
 		*/
 		void AddPlayer(Turret& turret);
 		/**
+		* Handle the input associated with this application.
+		*/
+		void HandleInputAppication();
+		/**
 		* Handle the input associated with the player A.
 		*/
 		void HandlePlayerAInput(const DX::StepTimer& timer);

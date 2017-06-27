@@ -8,6 +8,7 @@
 #include "MouseComponent.h"
 #include "GamePadComponent.h"
 #include "InputManager.h"
+#include "CollisionManager.h"
 
 using namespace DX;
 using namespace std;
@@ -48,15 +49,17 @@ namespace DirectXGame
 		mTimer.SetFixedTimeStep(true);
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);
 
-		GameObjectManager::CreateInstance();
 		InputManager::CreateInstance();
+		GameObjectManager::CreateInstance();
+		CollisionManager::CreateInstance();
 		GameManager::CreateInstance();
 		
 		InputManager::GetInstance()->SetGamePads(*mGamePad, *mGamePad2);
 		GameManager::SetSpriteManager(*mSpriteManager);
 
-		GameObjectManager::GetInstance()->Initialize();
 		InputManager::GetInstance()->Initialize();
+		GameObjectManager::GetInstance()->Initialize();
+		CollisionManager::GetInstance()->Initialize();
 		GameManager::GetInstance()->Initialize();
 
 		
@@ -65,6 +68,10 @@ namespace DirectXGame
 
 	GameMain::~GameMain()
 	{
+		GameObjectManager::GetInstance()->Shutdown();
+		GameManager::GetInstance()->Shutdown();
+		InputManager::GetInstance()->Shutdown();
+
 		mDeviceResources->RegisterDeviceNotify(nullptr);
 	}
 
@@ -87,8 +94,9 @@ namespace DirectXGame
 			{
 				component->Update(mTimer);	
 			}
-			GameObjectManager::GetInstance()->Update(mTimer);
 			InputManager::GetInstance()->Update(mTimer);
+			GameObjectManager::GetInstance()->Update(mTimer);
+			CollisionManager::GetInstance()->Update(mTimer);
 			GameManager::GetInstance()->Update(mTimer);
 
 			if (mGamePad->WasButtonPressedThisFrame(GamePadButtons::Back) || mGamePad2->WasButtonPressedThisFrame(GamePadButtons::Back))
@@ -138,27 +146,15 @@ namespace DirectXGame
 	// Notifies renderers that device resources need to be released.
 	void GameMain::OnDeviceLost()
 	{
-		GameObjectManager::GetInstance()->Shutdown();
-		GameManager::GetInstance()->Shutdown();
-		InputManager::GetInstance()->Shutdown();
-
 		for (auto& component : mComponents)
 		{
 			component->ReleaseDeviceDependentResources();
 		}
 	}
 
-	// TODO Handle input manager pointers being restored.
-
 	// Notifies renderers that device resources may now be recreated.
 	void GameMain::OnDeviceRestored()
 	{
-		GameObjectManager::CreateInstance();
-		InputManager::CreateInstance();
-
-		GameManager::CreateInstance();
-		GameManager::SetSpriteManager(*mSpriteManager);
-
 		IntializeResources();
 	}
 

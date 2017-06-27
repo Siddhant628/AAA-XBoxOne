@@ -39,6 +39,7 @@ namespace DirectXGame
 			HandlePlayerAInput(timer);
 			HandlePlayerBInput(timer);
 		}
+		HandleInputAppication();
 	}
 
 	void InputManager::Shutdown()
@@ -74,6 +75,17 @@ namespace DirectXGame
 		}
 	}
 	
+	void InputManager::HandleInputAppication()
+	{
+		if (mGamepad1->WasButtonPressedThisFrame(GamePadButtons::Start) || mGamepad2->WasButtonPressedThisFrame(GamePadButtons::Start))
+		{
+			if (GameManager::GetInstance() != nullptr)
+			{
+				GameManager::GetInstance()->RestartGame();
+			}
+		}
+	}
+
 	void InputManager::HandlePlayerAInput(const DX::StepTimer& timer)
 	{
 		float_t turretRotation = mTurretPlayer1->GetRotation();

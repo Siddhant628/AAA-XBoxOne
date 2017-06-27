@@ -56,18 +56,14 @@ namespace DirectXGame
 		* Get the transform associated with this game object.
 		*/
 		const DX::Transform2D& GetTransform() const;
-		
-		// TODO
 		/**
 		* Set the collider of this object.
 		*/
-		//void SetCollider(Collider& collider);
-		
-		// TODO
+		void SetCollider(Collider& collider);
 		/**
 		* Get the collider of this object.
 		*/
-		//Collider* GetCollider();
+		Collider* GetCollider();
 		
 		/**
 		* Set the sprite of this object.
@@ -81,23 +77,18 @@ namespace DirectXGame
 		* Attach a new sprite to this game object. (Removes the preexisting one)
 		*/
 		void AttachSprite();
-		
-		// TODO
 		/**
 		* Attach a new collider to this game object. (Removes the preexisting one)
 		*/
-		//void AttachCollider(std::uint32_t width, std::uint32_t height, float_t offsetX, float_t offsetY);
+		void AttachCollider(std::uint32_t width, std::uint32_t height, float_t offsetX, float_t offsetY);
 		/**
 		* Update method for each frame.
 		*/
-		
 		virtual void Update(const DX::StepTimer& timer);
-		
-		// TODO
 		/**
 		* The method which is called for this game object when it collides with another game object.
 		*/
-		//virtual void InCollision(Collider& otherCollider);
+		virtual void InCollision(Collider& otherCollider);
 	
 		protected:
 		/**
@@ -113,13 +104,10 @@ namespace DirectXGame
 		* The velocity of this game object.
 		*/
 		DirectX::XMFLOAT2 mVelocity;
-		
-		// TODO
 		/**
 		* The collider associated with this game object.
 		*/
-		//Collider* mCollider;
-		
+		Collider* mCollider;
 		/**
 		* The sprite associated with this game object.
 		*/

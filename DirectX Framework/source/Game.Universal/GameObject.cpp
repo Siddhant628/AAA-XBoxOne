@@ -2,12 +2,13 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "Sprite.h"
+#include "Collider.h"
 
 using namespace DirectX;
 
 namespace DirectXGame
 {
-	GameObject::GameObject()
+	GameObject::GameObject() : mCollider(nullptr), mSprite(nullptr)
 	{
 		SetPosition(0, 0);
 		SetVelocity(0, 0);
@@ -17,8 +18,8 @@ namespace DirectXGame
 	GameObject::~GameObject()
 	{
 		delete mSprite;
+		delete mCollider;
 		GameObjectManager::GetInstance()->Unregister(*this);
-		//delete mCollider;
 	}
 
 	void GameObject::SetPosition(std::float_t x, std::float_t y)
@@ -61,6 +62,18 @@ namespace DirectXGame
 		return mTransform;
 	}
 
+	void GameObject::SetCollider(Collider & collider)
+	{
+		delete mCollider;
+		mCollider = &collider;
+		mCollider->SetOwner(*this);
+	}
+
+	Collider* GameObject::GetCollider()
+	{
+		return mCollider;
+	}
+
 	void GameObject::SetSprite(Sprite& sprite)
 	{
 		delete mSprite;
@@ -80,15 +93,22 @@ namespace DirectXGame
 		mSprite->SetOwner(*this);
 	}
 
+	void GameObject::AttachCollider(std::uint32_t width, std::uint32_t height, float_t offsetX, float_t offsetY)
+	{
+		delete mCollider;
+		mCollider = new Collider(width, height, offsetX, offsetY);
+		mCollider->SetOwner(*this);
+	}
+
 	void GameObject::Update(const DX::StepTimer& timer)
 	{
 		double deltaTime = timer.GetElapsedSeconds();
 		UpdatePosition(deltaTime);
-		// TODO Remove as not required
-		//if (mSprite)
-		//{
-		//	mSprite->Update();
-		//}
+	}
+
+	void GameObject::InCollision(Collider& otherCollider)
+	{
+		otherCollider;
 	}
 
 	void GameObject::UpdatePosition(double deltaSeconds)

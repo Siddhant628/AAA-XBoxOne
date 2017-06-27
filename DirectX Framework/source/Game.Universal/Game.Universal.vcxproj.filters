@@ -46,6 +46,8 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Turret.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -61,6 +63,8 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Turret.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

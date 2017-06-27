@@ -8,6 +8,7 @@
 #include "Turret.h"
 
 #include <cassert>
+#include <time.h>
 
 namespace DirectXGame
 {
@@ -26,13 +27,13 @@ namespace DirectXGame
 	GameManager* GameManager::sInstance = nullptr;
 
 	// TODO Implement
-	GameManager::GameManager() : 
+	GameManager::GameManager() :
 		mGameIsRunning(true),
 		mSpriteManager(nullptr),
 		mEndGameScreen(nullptr),
 		mGameTime(0)
 	{
-
+		srand(static_cast<std::uint32_t>(time(nullptr)));
 	}
 
 	void GameManager::LoadBackground()
@@ -120,11 +121,13 @@ namespace DirectXGame
 		LoadEndGameScreen();
 	}
 
-	// TODO Implement
 	void GameManager::Update(const DX::StepTimer& timer)
 	{
 		mGameTime += timer.GetElapsedSeconds();
-		PlanesUpdate();
+		if (mGameIsRunning)
+		{
+			PlanesUpdate();
+		}
 	}
 
 	void GameManager::Shutdown()
@@ -132,7 +135,7 @@ namespace DirectXGame
 		delete sInstance;
 		sInstance = nullptr;
 	}
-	
+
 	SpriteManager* GameManager::GetSpriteManager()
 	{
 		assert(sInstance != nullptr);
@@ -145,7 +148,7 @@ namespace DirectXGame
 		assert(sInstance != nullptr);
 		sInstance->mSpriteManager = &spriteManager;
 	}
-	
+
 	void GameManager::RegisterPlane(Plane& plane)
 	{
 		if (plane.GetPlaneID() == Plane::PlaneID::PlaneA_1 || plane.GetPlaneID() == Plane::PlaneID::PlaneA_2)
@@ -163,7 +166,6 @@ namespace DirectXGame
 		return mGameIsRunning;
 	}
 
-	// TODO Handle total time
 	void GameManager::RestartGame()
 	{
 		assert(GameManager::GetInstance() != nullptr);
@@ -176,7 +178,7 @@ namespace DirectXGame
 			mGameIsRunning = true;
 		}
 	}
-	
+
 	void GameManager::LoadEndGameScreen()
 	{
 		mEndGameScreen = new GameObject;

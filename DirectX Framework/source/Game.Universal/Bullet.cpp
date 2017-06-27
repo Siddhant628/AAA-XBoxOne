@@ -27,7 +27,7 @@ namespace DirectXGame
 	double Bullet::sTimeSpentReloadingB = 0;
 
 	// TODO Attach collider
-	Bullet::Bullet(BulletOwner owner)
+	Bullet::Bullet(BulletOwner owner) : mCanBeFired(true)
 	{
 		//AttachCollider(sColliderWidth, sColliderHeight, sColliderOffsetX, sColliderOffsetY);
 		InitializeMembers(owner);
