@@ -5,10 +5,10 @@
 namespace DirectXGame
 {
 
-	const std::float_t Bullet::sSpawnPositionPlayerAX = 0;//124.0f;
-	const std::float_t Bullet::sSpawnPositionPlayerAY = 0;//47.0f;
-	const std::float_t Bullet::sSpawnPositionPlayerBX = 0;//890.0f;
-	const std::float_t Bullet::sSpawnPositionPlayerBY = 0;//47.0f;
+	const std::float_t Bullet::sSpawnPositionPlayerAX = -512 + 124 + 3;
+	const std::float_t Bullet::sSpawnPositionPlayerAY = -384 + 47 + 3;
+	const std::float_t Bullet::sSpawnPositionPlayerBX = 512 - 128 - 3;
+	const std::float_t Bullet::sSpawnPositionPlayerBY = -384 + 47 + 3;
 
 	const std::uint32_t Bullet::sMaxBulletCount = 3;
 	const std::float_t Bullet::sBulletSpeed = 520.0f;
@@ -35,7 +35,7 @@ namespace DirectXGame
 		GetSprite()->SetSprite(SpriteName::Bullet);
 	}
 
-	void Bullet::Update(const DX::StepTimer & timer)
+	void Bullet::Update(const DX::StepTimer& timer)
 	{
 		GameObject::Update(timer);
 		CheckForCanBeFired();
@@ -81,14 +81,14 @@ namespace DirectXGame
 		}
 	}
 
-	void Bullet::FireBullet(std::float_t angle, Bullet & bullet)
+	void Bullet::FireBullet(std::float_t angle, Bullet& bullet)
 	{
 		bullet.mCanBeFired = false;
 		angle += sFiringAngleOffset;
 		bullet.SetVelocity(sBulletSpeed * static_cast<float_t>(cos(angle * sPI / 180)), sBulletSpeed * static_cast<float_t>(sin(angle * sPI / 180)));
 	}
 
-	void Bullet::Reload(const DX::StepTimer & timer)
+	void Bullet::Reload(const DX::StepTimer& timer)
 	{
 		if (sRequiresReloadA)
 		{

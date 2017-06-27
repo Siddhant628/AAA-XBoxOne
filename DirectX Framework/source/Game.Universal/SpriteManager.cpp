@@ -119,8 +119,8 @@ namespace DirectXGame
 
 		// Load the sprite sheets after creating of pixel and vertex shader.
 		auto loadSpriteSheetAndCreateSpritesTask = (createPSTask && createVSTask).then([this]() {
-			
-			for(std::int32_t spriteName = static_cast<std::int32_t>(SpriteName::Background); spriteName < static_cast<std::int32_t>(SpriteName::GameEnd) + 1; ++spriteName)
+
+			for (std::int32_t spriteName = static_cast<std::int32_t>(SpriteName::Background); spriteName < static_cast<std::int32_t>(SpriteName::GameEnd) + 1; ++spriteName)
 			{
 				CreateWICTextureFromFile(mDeviceResources->GetD3DDevice(), sSpriteData.at(static_cast<SpriteName>(spriteName)).SpritePath.c_str(), nullptr, sSpriteSheets[static_cast<SpriteName>(spriteName)].ReleaseAndGetAddressOf());
 			}
@@ -188,8 +188,11 @@ namespace DirectXGame
 
 		for (const auto& sprite : mSprites)
 		{
-			direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(sprite->GetSprite()).GetAddressOf());
-			DrawSprite(*sprite);
+			if (sprite->IsEnabled())
+			{
+				direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(sprite->GetSprite()).GetAddressOf());
+				DrawSprite(*sprite);
+			}
 		}
 	}
 

@@ -40,9 +40,6 @@
 #include "OrthographicCamera.h"
 #include "Transform2D.h"
 #include "VertexDeclarations.h"
-#include "KeyboardComponent.h"
-#include "MouseComponent.h"
-#include "GamePadComponent.h"
 
 // Local
 #include "Sprite.h"

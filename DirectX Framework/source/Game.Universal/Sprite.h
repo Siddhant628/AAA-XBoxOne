@@ -19,6 +19,18 @@ namespace DirectXGame
 		* Unregisters the sprite from Sprite Manager.
 		*/
 		~Sprite();
+		/**
+		* Enable a sprite, so it renders.
+		*/
+		void Enable();
+		/**
+		* Disable the sprite, so it doesn't render.
+		*/
+		void Disable();
+		/**
+		* Get whether the sprite is enabled.
+		*/
+		bool IsEnabled();
 
 		const DX::Transform2D& Transform() const;
 		void SetTransform(const DX::Transform2D& transform);
@@ -53,5 +65,9 @@ namespace DirectXGame
 		* The enum value for the sprite in the sprite manager which is associated with this sprite.
 		*/
 		SpriteName mSpriteName;
+		/**
+		* The sprite will render only if it is enabled.
+		*/
+		bool mIsEnabled;
 	};
 }

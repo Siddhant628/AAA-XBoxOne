@@ -4,6 +4,9 @@
 #include "GameObjectManager.h"
 #include "GameManager.h"
 #include "GameObject.h"
+#include "KeyboardComponent.h"
+#include "MouseComponent.h"
+#include "GamePadComponent.h"
 
 using namespace DX;
 using namespace std;

@@ -165,26 +165,16 @@ namespace DirectXGame
 		//// Background sprite related variables.
 		//static const std::string sBackgroundSpritePath;
 		//// Turret base related variables.
-		//static const std::string sTurretBaseSpritePath;
-		//static const float_t sPositionTurretBaseAX;
-		//static const float_t sPositionTurretBaseAY;
-		//static const float_t sPositionTurretBaseBX;
-		//static const float_t sPositionTurretBaseBY;
-		//static const uint32_t sTurretBaseWidth;
-		//static const uint32_t sTurretBaseHeight;
+		static const std::float_t sPositionTurretBaseAX;
+		static const std::float_t sPositionTurretBaseAY;
+		static const std::float_t sPositionTurretBaseBX;
+		static const std::float_t sPositionTurretBaseBY;
 		//// End game screen related variables.
-		//static const float_t sEndGamePositionX;
-		//static const float_t sEndGamePositionY;
-		//static const uint32_t sEndGameWidth;
-		//static const uint32_t sEndGameHeight;
-		//static const std::string sEndGameSprite;
+		static const std::float_t sEndGamePositionX;
+		static const std::float_t sEndGamePositionY;
 		//// Lives related variables.
-		//static const uint32_t sLivesCount;
-		//static const uint32_t sLivesWidth;
-		//static const uint32_t sLivesHeight;
-		//static const float_t sLivesPositionOffsetY;
-		//static const float_t sLivesPositionOffsetX;
-		//static const std::string sLivesSpritePlayerA;
-		//static const std::string sLivesSpritePlayerB;
+		static const uint32_t sLivesCount;
+		static const float_t sLivesPositionOffsetY;
+		static const float_t sLivesPositionOffsetX;
 	};
 }

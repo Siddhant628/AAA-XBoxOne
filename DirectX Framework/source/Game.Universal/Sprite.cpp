@@ -11,7 +11,8 @@ namespace DirectXGame
 	Sprite::Sprite(const Transform2D & transform, const XMFLOAT4X4& textureTransform) :
 		mTransform(transform),
 		mTextureTransform(textureTransform),
-		mSpriteName(SpriteName::Background)
+		mSpriteName(SpriteName::Background),
+		mIsEnabled(true)
 	{
 		GameManager::GetSpriteManager()->Register(*this);
 	}
@@ -19,6 +20,21 @@ namespace DirectXGame
 	Sprite::~Sprite()
 	{
 		GameManager::GetSpriteManager()->Unregister(*this);
+	}
+
+	void Sprite::Enable()
+	{
+		mIsEnabled = true;
+	}
+
+	void Sprite::Disable()
+	{
+		mIsEnabled = false;
+	}
+
+	bool Sprite::IsEnabled()
+	{
+		return mIsEnabled;
 	}
 
 	const Transform2D& Sprite::Transform() const
