@@ -115,7 +115,7 @@ namespace DirectXGame
 		/**
 		* The level's planes are checked for respawn (re-spawnned if required), and health is decremented if planes cross into enemy territory.
 		*/
-		void PlanesUpdate(DWORD currentTime);
+		void PlanesUpdate(const DX::StepTimer& timer);
 		/**
 		* Decrements the health of the player and checks for lose condition.
 		*/
@@ -126,7 +126,9 @@ namespace DirectXGame
 		void EndGame();
 
 		void ResetLives();
-
+		/**
+		* Calls reset on each plane on both the teams.
+		*/
 		void ResetPlanes();
 
 		

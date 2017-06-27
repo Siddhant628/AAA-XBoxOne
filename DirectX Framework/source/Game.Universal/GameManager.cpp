@@ -14,7 +14,8 @@ namespace DirectXGame
 	// TODO Implement
 	GameManager::GameManager() : 
 		mGameIsRunning(false),
-		mSpriteManager(nullptr)
+		mSpriteManager(nullptr),
+		mEndGameScreen(nullptr)
 	{
 
 	}
@@ -58,7 +59,7 @@ namespace DirectXGame
 	// TODO Implement
 	void GameManager::Update(const DX::StepTimer& timer)
 	{
-		timer;
+		PlanesUpdate(timer);
 	}
 
 	void GameManager::Shutdown()
@@ -89,6 +90,66 @@ namespace DirectXGame
 		else if (plane.GetPlaneID() == Plane::PlaneID::PlaneB_1 || plane.GetPlaneID() == Plane::PlaneID::PlaneB_2)
 		{
 			mPlanesPlayerB.push_back(&plane);
+		}
+	}
+	
+	// TODO Decrement health
+	void GameManager::PlanesUpdate(const DX::StepTimer& timer)
+	{
+		// Check if all planes are ready for respawning.
+		auto it = mPlanesPlayerA.begin();
+		auto end = mPlanesPlayerA.end();
+
+		for (; it != end; ++it)
+		{
+			if (!(*it)->RequiresRespawn())
+			{
+				return;
+			}
+		}
+		it = mPlanesPlayerB.begin();
+		end = mPlanesPlayerB.end();
+		for (; it != end; ++it)
+		{
+			if (!(*it)->RequiresRespawn())
+			{
+				return;
+			}
+		}
+		// Check which planes did enter the enemy territory, update health accordingly, then respawn them.
+		it = mPlanesPlayerB.begin();
+		for (; it != end; ++it)
+		{
+			if ((*it)->GetPosition().x < Plane::sSpawnPositionA1X)
+			{
+				//DecrementHealth(PlayerEnum::PlayerA);
+			}
+			(*it)->Respawn(timer);
+		}
+
+		it = mPlanesPlayerA.begin();
+		end = mPlanesPlayerA.end();
+		for (; it != end; ++it)
+		{
+			if ((*it)->GetPosition().x > Plane::sSpawnPositionB1X)
+			{
+				//DecrementHealth(PlayerEnum::PlayerB);
+			}
+			(*it)->Respawn(timer);
+		}
+	}
+
+	void GameManager::ResetPlanes()
+	{
+		auto end = mPlanesPlayerA.end();
+		for (auto it = mPlanesPlayerA.begin(); it != end; ++it)
+		{
+			(*it)->ResetPlane();
+		}
+		end = mPlanesPlayerB.end();
+		for (auto it = mPlanesPlayerB.begin(); it != end; ++it)
+		{
+			(*it)->ResetPlane();
 		}
 	}
 }
