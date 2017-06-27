@@ -12,16 +12,16 @@
 namespace DirectXGame
 {
 	const std::float_t GameManager::sPositionTurretBaseAX = -512 + 29 + 100;
-	const std::float_t GameManager::sPositionTurretBaseAY = -384 + 35;
+	const std::float_t GameManager::sPositionTurretBaseAY = -384 + 35 + 27;
 	const std::float_t GameManager::sPositionTurretBaseBX = 512 - 29 - 100;
-	const std::float_t GameManager::sPositionTurretBaseBY = -384 + 35;
+	const std::float_t GameManager::sPositionTurretBaseBY = -384 + 35 + 27;
 
 	const std::float_t GameManager::sEndGamePositionX = 0;
 	const std::float_t GameManager::sEndGamePositionY = 384 - 250;
 
 	const uint32_t GameManager::sLivesCount = 5;
 	const float_t GameManager::sLivesPositionOffsetX = 30;
-	const float_t GameManager::sLivesPositionOffsetY = 5;
+	const float_t GameManager::sLivesPositionOffsetY = -384 + 10 + 5;
 
 	GameManager* GameManager::sInstance = nullptr;
 

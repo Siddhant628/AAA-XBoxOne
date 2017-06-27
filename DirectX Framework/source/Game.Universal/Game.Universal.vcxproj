@@ -250,6 +250,7 @@
     <Image Include="Content\Textures\snoods_default.png" />
     <Image Include="Content\Textures\Turret.png" />
     <Image Include="Content\Textures\TurretBase.png" />
+    <Image Include="Content\Textures\TurretNew.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />

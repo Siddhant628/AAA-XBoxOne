@@ -6,10 +6,10 @@
 
 namespace DirectXGame
 {
-	const std::float_t Turret::sTurretAPositionX = -512 + 127 + 29;
-	const std::float_t Turret::sTurretAPositionY = -384 + 27 + 50;
-	const std::float_t Turret::sTurretBPositionX = 512 - 73 - 29;
-	const std::float_t Turret::sTurretBPositionY = -384 + 27 + 50;
+	const std::float_t Turret::sTurretAPositionX = -512 + 127;
+	const std::float_t Turret::sTurretAPositionY = -384 + 50;
+	const std::float_t Turret::sTurretBPositionX = 512 - 127;
+	const std::float_t Turret::sTurretBPositionY = -384 + 50;
 
 	// TODO Check all rotation values and speed
 	const std::float_t Turret::sRotationTurretA = 5.0f;
@@ -39,11 +39,11 @@ namespace DirectXGame
 		{
 		case PlayerEnum::PlayerA:
 			mTransform.SetPosition(sTurretAPositionX, sTurretAPositionY);
-			mTransform.SetRotation(sRotationTurretA);
+			SetRotation(sRotationTurretA);
 			break;
 		case PlayerEnum::PlayerB:
 			mTransform.SetPosition(sTurretBPositionX, sTurretBPositionY);
-			mTransform.SetRotation(sRotationTurretB);
+			SetRotation(sRotationTurretB);
 			break;
 		}
 	}

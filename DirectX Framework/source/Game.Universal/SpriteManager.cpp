@@ -18,7 +18,7 @@ namespace DirectXGame
 		{SpriteName::LivesB,		{ L"Content\\Textures\\LivesB.png" ,		XMFLOAT2(10, 10) } },
 		{SpriteName::PlaneA,		{ L"Content\\Textures\\PlaneA.png" ,		XMFLOAT2(50, 28) } },
 		{SpriteName::PlaneB,		{ L"Content\\Textures\\PlaneB.png" ,		XMFLOAT2(50, 24) } },
-		{SpriteName::Turret,		{ L"Content\\Textures\\Turret.png" ,		XMFLOAT2(22, 39) } },
+		{SpriteName::Turret,		{ L"Content\\Textures\\TurretNew.png" ,		XMFLOAT2(41, 78) } },
 		{SpriteName::TurretBase,	{ L"Content\\Textures\\TurretBase.png" ,	XMFLOAT2(29, 27) } }
 	};
 
@@ -211,7 +211,7 @@ namespace DirectXGame
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
 
 		XMFLOAT2 objectPosition = sprite.GetOwner()->GetPosition();
-		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * XMMatrixRotationZ(sprite.GetOwner()->GetRotation()) * XMMatrixTranslation(objectPosition.x, objectPosition.y, 0) * mCamera->ViewProjectionMatrix());
+		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * XMMatrixRotationZ(XMConvertToRadians(sprite.GetOwner()->GetRotation())) * XMMatrixTranslation(objectPosition.x, objectPosition.y, 0) * mCamera->ViewProjectionMatrix());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.WorldViewProjection, wvp);
 		XMMATRIX textureTransform = XMLoadFloat4x4(&sprite.TextureTransform());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.TextureTransform, XMMatrixTranspose(textureTransform));

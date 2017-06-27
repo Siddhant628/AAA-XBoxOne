@@ -96,6 +96,9 @@
     <Image Include="Content\Textures\LivesB.png">
       <Filter>Content\Textures</Filter>
     </Image>
+    <Image Include="Content\Textures\TurretNew.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
