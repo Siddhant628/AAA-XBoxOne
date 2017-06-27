@@ -20,14 +20,14 @@ namespace DirectXGame
 	const std::float_t GameManager::sEndGamePositionY = 384 - 250;
 
 	const uint32_t GameManager::sLivesCount = 5;
-	const float_t GameManager::sLivesPositionOffsetX = 30.0f;
-	const float_t GameManager::sLivesPositionOffsetY = 5.0f;
+	const float_t GameManager::sLivesPositionOffsetX = 30;
+	const float_t GameManager::sLivesPositionOffsetY = 5;
 
 	GameManager* GameManager::sInstance = nullptr;
 
 	// TODO Implement
 	GameManager::GameManager() : 
-		mGameIsRunning(false),
+		mGameIsRunning(true),
 		mSpriteManager(nullptr),
 		mEndGameScreen(nullptr)
 	{
@@ -73,6 +73,28 @@ namespace DirectXGame
 		turretBaseB->GetSprite()->SetSprite(SpriteName::TurretBase);
 	}
 
+	void GameManager::LoadLivesSprites()
+	{
+		for (uint32_t i = 0; i < sLivesCount; ++i)
+		{
+			mLivesPlayerA.push_back(new GameObject);
+			auto it = mLivesPlayerA.end();
+			--it;
+			(*it)->AttachSprite();
+			(*it)->GetSprite()->SetSprite(SpriteName::LivesA);
+			(*it)->SetPosition(-512 + 10 + 3 + sLivesPositionOffsetX * i, sLivesPositionOffsetY);
+
+			mLivesPlayerB.push_back(new GameObject);
+			it = mLivesPlayerB.end();
+			--it;
+			(*it)->AttachSprite();
+			(*it)->GetSprite()->SetSprite(SpriteName::LivesB);
+			(*it)->SetPosition(512 - 10 - 3 - sLivesPositionOffsetX * i, sLivesPositionOffsetY);
+		}
+		mCurrentHealthA = --mLivesPlayerA.end();
+		mCurrentHealthB = mLivesPlayerB.begin();
+	}
+
 	GameManager* GameManager::CreateInstance()
 	{
 		if (!sInstance)
@@ -87,14 +109,12 @@ namespace DirectXGame
 		return sInstance;
 	}
 
-	// TODO Implement
 	void GameManager::Initialize()
 	{
 		LoadEndGameScreen();
-		//
-		LoadBullets();
+		LoadLivesSprites();
 		LoadTurrets();
-		
+		LoadBullets();
 		LoadPlanes();
 		LoadBackground();
 	}
@@ -133,6 +153,27 @@ namespace DirectXGame
 		else if (plane.GetPlaneID() == Plane::PlaneID::PlaneB_1 || plane.GetPlaneID() == Plane::PlaneID::PlaneB_2)
 		{
 			mPlanesPlayerB.push_back(&plane);
+		}
+	}
+
+	bool GameManager::IsGameRunning()
+	{
+		return mGameIsRunning;
+	}
+
+	// TODO Handle total time
+	void GameManager::RestartGame()
+	{
+		assert(GameManager::GetInstance() != nullptr);
+		if (!GameManager::GetInstance()->IsGameRunning())
+		{
+			ResetLives();
+			ResetPlanes();
+			// Enable the game
+			// TODO Handle total time
+			//mCurrentTime = 0;
+			mEndGameScreen->GetSprite()->Disable();
+			mGameIsRunning = true;
 		}
 	}
 	
@@ -174,7 +215,7 @@ namespace DirectXGame
 		{
 			if ((*it)->GetPosition().x < Plane::sSpawnPositionA1X)
 			{
-				//DecrementHealth(PlayerEnum::PlayerA);
+				DecrementHealth(PlayerEnum::PlayerA);
 			}
 			(*it)->Respawn(timer);
 		}
@@ -185,10 +226,61 @@ namespace DirectXGame
 		{
 			if ((*it)->GetPosition().x > Plane::sSpawnPositionB1X)
 			{
-				//DecrementHealth(PlayerEnum::PlayerB);
+				DecrementHealth(PlayerEnum::PlayerB);
 			}
 			(*it)->Respawn(timer);
 		}
+	}
+
+	void GameManager::DecrementHealth(PlayerEnum playerEnum)
+	{
+		if (mGameIsRunning)
+		{
+			switch (playerEnum)
+			{
+			case PlayerEnum::PlayerA:
+				(*mCurrentHealthA)->GetSprite()->Disable();
+				if (mCurrentHealthA == mLivesPlayerA.begin())
+				{
+					EndGame();
+					return;
+				}
+				mCurrentHealthA--;
+				break;
+			case PlayerEnum::PlayerB:
+				(*mCurrentHealthB)->GetSprite()->Disable();
+				mCurrentHealthB++;
+				if (mCurrentHealthB == mLivesPlayerB.end())
+				{
+					EndGame();
+				}
+				break;
+			}
+		}
+	}
+
+	void GameManager::EndGame()
+	{
+		mEndGameScreen->GetSprite()->Enable();
+		mGameIsRunning = false;
+	}
+
+	void GameManager::ResetLives()
+	{
+		// Enable all the health sprites
+		auto end = mLivesPlayerA.end();
+		for (auto it = mLivesPlayerA.begin(); it != end; ++it)
+		{
+			(*it)->GetSprite()->Enable();
+		}
+		end = mLivesPlayerB.end();
+		for (auto it = mLivesPlayerB.begin(); it != end; ++it)
+		{
+			(*it)->GetSprite()->Enable();
+		}
+		// Reset the current health pointers
+		mCurrentHealthA = --mLivesPlayerA.end();
+		mCurrentHealthB = mLivesPlayerB.begin();
 	}
 
 	void GameManager::ResetPlanes()

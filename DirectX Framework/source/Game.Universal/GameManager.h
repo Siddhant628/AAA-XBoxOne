@@ -162,8 +162,6 @@ namespace DirectXGame
 		*/
 		DirectXGame::GameObject* mEndGameScreen;
 
-		//// Background sprite related variables.
-		//static const std::string sBackgroundSpritePath;
 		//// Turret base related variables.
 		static const std::float_t sPositionTurretBaseAX;
 		static const std::float_t sPositionTurretBaseAY;
