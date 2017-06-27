@@ -188,7 +188,7 @@ namespace DirectXGame
 
 		for (const auto& sprite : mSprites)
 		{
-			direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(sprite->GetSpriteName()).GetAddressOf());
+			direct3DDeviceContext->PSSetShaderResources(0, 1, sSpriteSheets.at(sprite->GetSprite()).GetAddressOf());
 			DrawSprite(*sprite);
 		}
 	}
@@ -288,7 +288,7 @@ namespace DirectXGame
 		for (auto it = mSprites.begin(); it != mSprites.end(); ++it)
 		{
 			Transform2D transform;
-			transform.SetScale(sSpriteData.at((*it)->GetSpriteName()).DefaultScale);
+			transform.SetScale(sSpriteData.at((*it)->GetSprite()).DefaultScale);
 			(*it)->SetTransform(transform);
 		}
 	}

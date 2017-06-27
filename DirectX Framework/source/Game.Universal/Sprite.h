@@ -26,8 +26,8 @@ namespace DirectXGame
 		const DirectX::XMFLOAT4X4& TextureTransform() const;
 		void SetTextureTransform(const DirectX::XMFLOAT4X4& transform);
 
-		const SpriteName GetSpriteName() const;
-		void SetSpriteName(SpriteName spriteName);
+		const SpriteName GetSprite() const;
+		void SetSprite(SpriteName spriteName);
 	protected:
 		/**
 		* Get the owner game object.

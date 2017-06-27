@@ -1,5 +1,10 @@
 #include "pch.h"
 #include "GameManager.h"
+#include "GameObject.h"
+#include "Sprite.h"
+#include "SpriteManager.h"
+#include "Plane.h"
+
 #include <cassert>
 
 namespace DirectXGame
@@ -12,6 +17,21 @@ namespace DirectXGame
 		mSpriteManager(nullptr)
 	{
 
+	}
+
+	void GameManager::LoadBackground()
+	{
+		GameObject* object = new GameObject();
+		object->AttachSprite();
+		object->GetSprite()->SetSprite(SpriteName::Background);
+	}
+
+	void GameManager::LoadPlanes()
+	{
+		new Plane(Plane::PlaneID::PlaneA_1);
+		new Plane(Plane::PlaneID::PlaneA_2);
+		new Plane(Plane::PlaneID::PlaneB_1);
+		new Plane(Plane::PlaneID::PlaneB_2);
 	}
 
 	GameManager* GameManager::CreateInstance()
@@ -31,7 +51,8 @@ namespace DirectXGame
 	// TODO Implement
 	void GameManager::Initialize()
 	{
-
+		LoadPlanes();
+		LoadBackground();
 	}
 
 	// TODO Implement
@@ -57,5 +78,17 @@ namespace DirectXGame
 	{
 		assert(sInstance != nullptr);
 		sInstance->mSpriteManager = &spriteManager;
+	}
+	
+	void GameManager::RegisterPlane(Plane& plane)
+	{
+		if (plane.GetPlaneID() == Plane::PlaneID::PlaneA_1 || plane.GetPlaneID() == Plane::PlaneID::PlaneA_2)
+		{
+			mPlanesPlayerA.push_back(&plane);
+		}
+		else if (plane.GetPlaneID() == Plane::PlaneID::PlaneB_1 || plane.GetPlaneID() == Plane::PlaneID::PlaneB_2)
+		{
+			mPlanesPlayerB.push_back(&plane);
+		}
 	}
 }

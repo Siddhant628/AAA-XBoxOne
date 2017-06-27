@@ -54,13 +54,13 @@ namespace DirectXGame
 		*/
 		static void SetSpriteManager(SpriteManager& spriteManager);
 
-		///* Other methods. */
-		///**
-		//* Register a plane to this game manager.
-		//*/
-		//void RegisterPlane(Plane& plane);
+		/* Other methods. */
+		/**
+		* Register a plane to this game manager.
+		*/
+		void RegisterPlane(Plane& plane);
 
-		//bool IsGameRunning();
+		bool IsGameRunning();
 		///**
 		//* Request the game manager to restart the game.
 		//*/
@@ -84,86 +84,86 @@ namespace DirectXGame
 		SpriteManager* mSpriteManager;
 
 
-		///* Methods associated with loading of game objects. */
-		///**
-		//* Load the background game object.
-		//*/
-		//void LoadBackground();
-		///**
-		//* Load the plane game objects.
-		//*/
-		//void LoadPlanes();
-		///**
-		//* Load the bullet game objects.
-		//*/
-		//void LoadBullets();
-		///**
-		//* Load the turret game objects.
-		//*/
-		//void LoadTurrets();
-		///**
-		//* Load the game objects associated with sprites displaying lives.
-		//*/
-		//void LoadLivesSprites();
-		///**
-		//* Loads the sprite associated with the end game screen.
-		//*/
-		//void LoadEndGameScreen();
+		/* Methods associated with loading of game objects. */
+		/**
+		* Load the background game object.
+		*/
+		void LoadBackground();
+		/**
+		* Load the plane game objects.
+		*/
+		void LoadPlanes();
+		/**
+		* Load the bullet game objects.
+		*/
+		void LoadBullets();
+		/**
+		* Load the turret game objects.
+		*/
+		void LoadTurrets();
+		/**
+		* Load the game objects associated with sprites displaying lives.
+		*/
+		void LoadLivesSprites();
+		/**
+		* Loads the sprite associated with the end game screen.
+		*/
+		void LoadEndGameScreen();
 
 
-		///* Other methods. */
-		///**
-		//* The level's planes are checked for respawn (re-spawnned if required), and health is decremented if planes cross into enemy territory.
-		//*/
-		//void PlanesUpdate(DWORD currentTime);
-		///**
-		//* Decrements the health of the player and checks for lose condition.
-		//*/
-		//void DecrementHealth(PlayerEnum playerEnum);
-		///**
-		//* Perform actions associated with level end.
-		//*/
-		//void EndGame();
+		/* Other methods. */
+		/**
+		* The level's planes are checked for respawn (re-spawnned if required), and health is decremented if planes cross into enemy territory.
+		*/
+		void PlanesUpdate(DWORD currentTime);
+		/**
+		* Decrements the health of the player and checks for lose condition.
+		*/
+		void DecrementHealth(PlayerEnum playerEnum);
+		/**
+		* Perform actions associated with level end.
+		*/
+		void EndGame();
 
-		//void ResetLives();
+		void ResetLives();
 
-		//void ResetPlanes();
+		void ResetPlanes();
 
 		
-		///**
-		//* Game objects which represent lives of player A.
-		//*/
-		//std::vector<Engine::GameObject*> mLivesPlayerA;
-		///**
-		//* Game objects which represent lives of player B.
-		//*/
-		//std::vector<Engine::GameObject*> mLivesPlayerB;
-		///**
-		//* Game objects which represent planes of player A.
-		//*/
-		//std::vector<Plane*> mPlanesPlayerA;
-		///**
-		//* Game objects which represent planes of player B.
-		//*/
-		//std::vector<Plane*> mPlanesPlayerB;
-		///**
-		//* Iterator associated with the current health object of player A.
-		//*/
-		//std::vector<Engine::GameObject*>::iterator mCurrentHealthA;
-		///**
-		//* Iterator associated with the current health object of player B.
-		//*/
-		//std::vector<Engine::GameObject*>::iterator mCurrentHealthB;
-		///**
-		//* A pointer to the game object loaded at the end of the game.
-		//*/
-		//Engine::GameObject* mEndGameScreen;
+		/**
+		* Game objects which represent lives of player A.
+		*/
+		std::vector<DirectXGame::GameObject*> mLivesPlayerA;
+		/**
+		* Game objects which represent lives of player B.
+		*/
+		std::vector<DirectXGame::GameObject*> mLivesPlayerB;
+		/**
+		* Game objects which represent planes of player A.
+		*/
+		std::vector<Plane*> mPlanesPlayerA;
+		/**
+		* Game objects which represent planes of player B.
+		*/
+		std::vector<Plane*> mPlanesPlayerB;
+		/**
+		* Iterator associated with the current health object of player A.
+		*/
+		std::vector<DirectXGame::GameObject*>::iterator mCurrentHealthA;
+		/**
+		* Iterator associated with the current health object of player B.
+		*/
+		std::vector<DirectXGame::GameObject*>::iterator mCurrentHealthB;
+		/**
+		* A pointer to the game object loaded at the end of the game.
+		*/
+		DirectXGame::GameObject* mEndGameScreen;
 		
 		
 		
-		///**
-		//* The amount of time passed since the start of the game.
-		//*/
+		/**
+		* The amount of time passed since the start of the game.
+		*/
 		//DWORD mCurrentTime;
 
 		//// Background sprite related variables.

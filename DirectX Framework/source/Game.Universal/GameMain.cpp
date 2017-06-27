@@ -23,8 +23,7 @@ namespace DirectXGame
 		// Register to be notified if the Device is lost or recreated
 		mDeviceResources->RegisterDeviceNotify(this);
 
-		GameObjectManager::CreateInstance();
-		GameManager::CreateInstance();
+		
 		
 		auto camera = make_shared<OrthographicCamera>(mDeviceResources, 1024.0f, 768.0f);
 		mComponents.push_back(camera);
@@ -51,24 +50,13 @@ namespace DirectXGame
 		mTimer.SetFixedTimeStep(true);
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);
 
-		GameObjectManager::GetInstance()->Initialize();
+		GameObjectManager::CreateInstance();
+		GameManager::CreateInstance();
 		
-		GameManager::GetInstance()->Initialize();
 		GameManager::SetSpriteManager(*mSpriteManager);
-		
-		GameObject* object2 = new GameObject();
-		object2->AttachSprite();
-		object2->GetSprite()->SetSpriteName(SpriteName::PlaneA);
-		object2->SetPosition(-512 + 50, 384 - 28);
-		object2->SetVelocity(10, 0);
 
-		GameObject* object3 = new GameObject();
-		object3->AttachSprite();
-		object3->GetSprite()->SetSpriteName(SpriteName::PlaneA);
-		object3->SetPosition(-512 + 150, 384 - 84);
-
-		GameObject* object = new GameObject();
-		object->AttachSprite();
+		GameObjectManager::GetInstance()->Initialize();
+		GameManager::GetInstance()->Initialize();
 
 		
 		IntializeResources();

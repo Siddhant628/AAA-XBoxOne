@@ -41,12 +41,12 @@ namespace DirectXGame
 		mTextureTransform = transform;
 	}
 
-	const SpriteName Sprite::GetSpriteName() const
+	const SpriteName Sprite::GetSprite() const
 	{
 		return mSpriteName;
 	}
 
-	void Sprite::SetSpriteName(SpriteName spriteName)
+	void Sprite::SetSprite(SpriteName spriteName)
 	{
 		mSpriteName = spriteName;
 	}
