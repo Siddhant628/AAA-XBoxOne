@@ -125,7 +125,9 @@ namespace DirectXGame
 		* Perform actions associated with level end.
 		*/
 		void EndGame();
-
+		/**
+		* Re-enable the health sprites and update the health sprite iterators.
+		*/
 		void ResetLives();
 		/**
 		* Calls reset on each plane on both the teams.

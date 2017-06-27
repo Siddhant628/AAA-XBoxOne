@@ -111,12 +111,12 @@ namespace DirectXGame
 
 	void GameManager::Initialize()
 	{
-		LoadEndGameScreen();
-		LoadLivesSprites();
-		LoadTurrets();
-		LoadBullets();
-		LoadPlanes();
 		LoadBackground();
+		LoadPlanes();
+		LoadBullets();
+		LoadTurrets();
+		LoadLivesSprites();
+		LoadEndGameScreen();
 	}
 
 	// TODO Implement
@@ -186,7 +186,6 @@ namespace DirectXGame
 		mEndGameScreen->GetSprite()->SetSprite(SpriteName::GameEnd);
 	}
 
-	// TODO Decrement health
 	void GameManager::PlanesUpdate(const DX::StepTimer& timer)
 	{
 		// Check if all planes are ready for respawning.

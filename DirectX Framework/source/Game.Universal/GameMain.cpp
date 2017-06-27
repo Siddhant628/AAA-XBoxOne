@@ -119,11 +119,12 @@ namespace DirectXGame
 
 		// Reset render targets to the screen.
 		ID3D11RenderTargetView *const targets[1] = { mDeviceResources->GetBackBufferRenderTargetView() };
-		context->OMSetRenderTargets(1, targets, mDeviceResources->GetDepthStencilView());
-
+		//context->OMSetRenderTargets(1, targets, mDeviceResources->GetDepthStencilView());
+		context->OMSetRenderTargets(1, targets, nullptr);
+		
 		// Clear the back buffer and depth stencil view.
-		context->ClearRenderTargetView(mDeviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::Black);
-		context->ClearDepthStencilView(mDeviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		context->ClearRenderTargetView(mDeviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::CornflowerBlue);
+		//context->ClearDepthStencilView(mDeviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		for (auto& component : mComponents)
 		{
