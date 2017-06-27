@@ -51,6 +51,16 @@ namespace DirectXGame
 		return mTransform.Rotation();
 	}
 
+	void GameObject::SetTransform(DX::Transform2D transform)
+	{
+		mTransform = transform;
+	}
+
+	const DX::Transform2D& GameObject::GetTransform() const
+	{
+		return mTransform;
+	}
+
 	void GameObject::SetSprite(Sprite& sprite)
 	{
 		delete mSprite;

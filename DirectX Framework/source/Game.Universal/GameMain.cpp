@@ -59,6 +59,13 @@ namespace DirectXGame
 		GameObject* object2 = new GameObject();
 		object2->AttachSprite();
 		object2->GetSprite()->SetSpriteName(SpriteName::PlaneA);
+		object2->SetPosition(-512 + 50, 384 - 28);
+		object2->SetVelocity(10, 0);
+
+		GameObject* object3 = new GameObject();
+		object3->AttachSprite();
+		object3->GetSprite()->SetSpriteName(SpriteName::PlaneA);
+		object3->SetPosition(-512 + 150, 384 - 84);
 
 		GameObject* object = new GameObject();
 		object->AttachSprite();

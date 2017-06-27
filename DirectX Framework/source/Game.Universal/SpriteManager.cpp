@@ -109,7 +109,7 @@ namespace DirectXGame
 			blendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 			blendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 			blendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-			blendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+			blendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 			blendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 			blendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 			blendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
@@ -207,7 +207,8 @@ namespace DirectXGame
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
 
-		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * mCamera->ViewProjectionMatrix());
+		XMFLOAT2 objectPosition = sprite.GetOwner()->GetPosition();
+		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * XMMatrixTranslation(objectPosition.x, objectPosition.y, 0) * mCamera->ViewProjectionMatrix());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.WorldViewProjection, wvp);
 		XMMATRIX textureTransform = XMLoadFloat4x4(&sprite.TextureTransform());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.TextureTransform, XMMatrixTranspose(textureTransform));

@@ -46,6 +46,16 @@ namespace DirectXGame
 		* Get the rotation of this game object in degrees.
 		*/
 		const std::float_t GetRotation() const;
+		/**
+		* Set the transform associated with this game object.
+		* @param transform The tranform to set.
+		*
+		*/
+		void SetTransform(DX::Transform2D transform);
+		/**
+		* Get the transform associated with this game object.
+		*/
+		const DX::Transform2D& GetTransform() const;
 		
 		// TODO
 		/**

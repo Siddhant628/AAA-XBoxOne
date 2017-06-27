@@ -26,7 +26,7 @@ namespace DirectXGame
 	{
 	public:
 		SpriteManager(const std::shared_ptr<DX::DeviceResources>& deviceResources, const std::shared_ptr<DX::Camera>& camera);
-
+		
 		const DirectX::XMFLOAT2& Position() const;
 		void SetPositon(const DirectX::XMFLOAT2& position);
 
