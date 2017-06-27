@@ -109,7 +109,7 @@ namespace DirectXGame
 
 	void InputManager::HandlePlayerBInput(const DX::StepTimer& timer)
 	{
-		float_t turretRotation = mTurretPlayer1->GetRotation();
+		float_t turretRotation = mTurretPlayer2->GetRotation();
 		// Fire bullet
 		if (mGamepad2->IsButtonHeldDown(GamePadButtons::A))
 		{
