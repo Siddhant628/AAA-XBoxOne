@@ -211,7 +211,7 @@ namespace DirectXGame
 		ID3D11DeviceContext* direct3DDeviceContext = mDeviceResources->GetD3DDeviceContext();
 
 		XMFLOAT2 objectPosition = sprite.GetOwner()->GetPosition();
-		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * XMMatrixTranslation(objectPosition.x, objectPosition.y, 0) * mCamera->ViewProjectionMatrix());
+		const XMMATRIX wvp = XMMatrixTranspose(sprite.Transform().WorldMatrix() * XMMatrixRotationZ(sprite.GetOwner()->GetRotation()) * XMMatrixTranslation(objectPosition.x, objectPosition.y, 0) * mCamera->ViewProjectionMatrix());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.WorldViewProjection, wvp);
 		XMMATRIX textureTransform = XMLoadFloat4x4(&sprite.TextureTransform());
 		XMStoreFloat4x4(&mVSCBufferPerObjectData.TextureTransform, XMMatrixTranspose(textureTransform));

@@ -2,6 +2,12 @@
 #include "InputManager.h"
 #include "GameManager.h"
 #include "GamePadComponent.h"
+#include "Turret.h"
+#include "Bullet.h"
+
+#define DISABLE_ROTATE_ON_FIRE 0
+
+using namespace DX;
 
 namespace DirectXGame
 {
@@ -68,15 +74,69 @@ namespace DirectXGame
 		}
 	}
 	
-	// TODO Implement
 	void InputManager::HandlePlayerAInput(const DX::StepTimer& timer)
 	{
-		timer;
+		float_t turretRotation = mTurretPlayer1->GetRotation();
+		// Fire bullet
+		if (mGamepad1->IsButtonHeldDown(GamePadButtons::A))
+		{
+			Bullet::Fire(turretRotation, Bullet::BulletOwner::PlayerA);
+		}
+		// Rotate turret left
+#if DISABLE_ROTATE_ON_FIRE
+		else
+		{
+#endif
+			if (mGamepad1->IsButtonHeldDown(GamePadButtons::DPadLeft))
+			{
+				if (turretRotation < Turret::sRightRotationEnd)
+				{
+					mTurretPlayer1->SetRotation(turretRotation + static_cast<std::float_t>(Turret::sTurretRotationSpeed * timer.GetElapsedSeconds()));
+				}
+			}
+			// Rotate turret right
+			if (mGamepad1->IsButtonHeldDown(GamePadButtons::DPadRight))
+			{
+				if (turretRotation > Turret::sLeftRotationEnd)
+				{
+					mTurretPlayer1->SetRotation(turretRotation - static_cast<std::float_t>(Turret::sTurretRotationSpeed * timer.GetElapsedSeconds()));
+				}
+			}
+#if DISABLE_ROTATE_ON_FIRE
+		}
+#endif
 	}
 
-	// TODO Implement
 	void InputManager::HandlePlayerBInput(const DX::StepTimer& timer)
 	{
-		timer;
+		float_t turretRotation = mTurretPlayer1->GetRotation();
+		// Fire bullet
+		if (mGamepad2->IsButtonHeldDown(GamePadButtons::A))
+		{
+			Bullet::Fire(turretRotation, Bullet::BulletOwner::PlayerB);
+		}
+		// Rotate turret left
+#if DISABLE_ROTATE_ON_FIRE
+		else
+		{
+#endif
+			if (mGamepad2->IsButtonHeldDown(GamePadButtons::DPadLeft))
+			{
+				if (turretRotation < Turret::sRightRotationEnd)
+				{
+					mTurretPlayer2->SetRotation(turretRotation + static_cast<std::float_t>(Turret::sTurretRotationSpeed * timer.GetElapsedSeconds()));
+				}
+			}
+			// Rotate turret right
+			if (mGamepad2->IsButtonHeldDown(GamePadButtons::DPadRight))
+			{
+				if (turretRotation > Turret::sLeftRotationEnd)
+				{
+					mTurretPlayer2->SetRotation(turretRotation - static_cast<std::float_t>(Turret::sTurretRotationSpeed * timer.GetElapsedSeconds()));
+				}
+			}
+#if DISABLE_ROTATE_ON_FIRE
+		}
+#endif
 	}
 }

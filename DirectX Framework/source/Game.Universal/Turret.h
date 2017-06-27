@@ -27,6 +27,7 @@ namespace DirectXGame
 		* Update for each frame.
 		*/
 		virtual void Update(const DX::StepTimer& timer) override;
+
 	private:
 		/**
 		* Initializes the members of object.

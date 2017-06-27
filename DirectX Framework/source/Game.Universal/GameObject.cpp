@@ -43,12 +43,12 @@ namespace DirectXGame
 
 	void GameObject::SetRotation(std::float_t rotation)
 	{
-		mTransform.SetRotation(rotation);
+		mTransform.SetRotation(XMConvertToRadians(rotation));
 	}
 
 	const std::float_t GameObject::GetRotation() const
 	{
-		return mTransform.Rotation();
+		return XMConvertToDegrees(mTransform.Rotation());
 	}
 
 	void GameObject::SetTransform(DX::Transform2D transform)

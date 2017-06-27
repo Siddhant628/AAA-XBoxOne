@@ -33,10 +33,10 @@ namespace DirectXGame
 
 		CoreWindow^ window = CoreWindow::GetForCurrentThread();
 
-		mGamePad = make_shared<GamePadComponent>(mDeviceResources);
+		mGamePad = make_shared<GamePadComponent>(mDeviceResources, 0);
 		mComponents.push_back(mGamePad);
 
-		mGamePad2 = make_shared<GamePadComponent>(mDeviceResources);
+		mGamePad2 = make_shared<GamePadComponent>(mDeviceResources, 1);
 		mComponents.push_back(mGamePad2);
 
 		auto fpsTextRenderer = make_shared<FpsTextRenderer>(mDeviceResources);
@@ -91,11 +91,7 @@ namespace DirectXGame
 			InputManager::GetInstance()->Update(mTimer);
 			GameManager::GetInstance()->Update(mTimer);
 
-			if (mGamePad->WasButtonPressedThisFrame(GamePadButtons::Back))
-			{
-				CoreApplication::Exit();
-			}
-			if (mGamePad2->WasButtonPressedThisFrame(GamePadButtons::Back))
+			if (mGamePad->WasButtonPressedThisFrame(GamePadButtons::Back) || mGamePad2->WasButtonPressedThisFrame(GamePadButtons::Back))
 			{
 				CoreApplication::Exit();
 			}
