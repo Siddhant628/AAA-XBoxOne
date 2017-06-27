@@ -83,6 +83,10 @@ namespace DirectXGame
 		* The sprite manager associated with this instance of game.
 		*/
 		SpriteManager* mSpriteManager;
+		/**
+		* The amount of time since which game has been running.
+		*/
+		double mGameTime;
 
 
 		/* Methods associated with loading of game objects. */
@@ -116,7 +120,7 @@ namespace DirectXGame
 		/**
 		* The level's planes are checked for respawn (re-spawnned if required), and health is decremented if planes cross into enemy territory.
 		*/
-		void PlanesUpdate(const DX::StepTimer& timer);
+		void PlanesUpdate();
 		/**
 		* Decrements the health of the player and checks for lose condition.
 		*/

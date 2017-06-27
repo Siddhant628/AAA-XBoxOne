@@ -39,9 +39,9 @@ namespace DirectXGame
 		SetPosition(mSpawnPositionX, mSpawnPositionY);
 	}
 
-	void Plane::Respawn(const DX::StepTimer& timer)
+	void Plane::Respawn(const double& totalTime)
 	{
-		SetVelocity(GetSpeed(timer), 0);
+		SetVelocity(GetSpeed(totalTime), 0);
 		SetPosition(mSpawnPositionX, mSpawnPositionY + GetRangedRandom(sMinSpawnPositionVarianceY, sMaxSpawnPositionVarianceY) - sMaxSpawnPositionVarianceY / 2);
 	}
 
@@ -124,10 +124,10 @@ namespace DirectXGame
 		SetPosition(mSpawnPositionX, mSpawnPositionY);
 	}
 
-	std::float_t Plane::GetSpeed(const DX::StepTimer& timer)
+	std::float_t Plane::GetSpeed(const double& totalTime)
 	{
 		// Estimate base speed based on the current time
-		std::float_t timeRatio = static_cast<std::float_t>(timer.GetTotalSeconds() / sTimeForMaximumSpeed);
+		std::float_t timeRatio = static_cast<std::float_t>(totalTime / sTimeForMaximumSpeed);
 		if (timeRatio > 1.0f)
 		{
 			timeRatio = 1.0f;

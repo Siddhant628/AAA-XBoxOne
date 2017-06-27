@@ -29,7 +29,8 @@ namespace DirectXGame
 	GameManager::GameManager() : 
 		mGameIsRunning(true),
 		mSpriteManager(nullptr),
-		mEndGameScreen(nullptr)
+		mEndGameScreen(nullptr),
+		mGameTime(0)
 	{
 
 	}
@@ -122,7 +123,8 @@ namespace DirectXGame
 	// TODO Implement
 	void GameManager::Update(const DX::StepTimer& timer)
 	{
-		PlanesUpdate(timer);
+		mGameTime += timer.GetElapsedSeconds();
+		PlanesUpdate();
 	}
 
 	void GameManager::Shutdown()
@@ -169,9 +171,7 @@ namespace DirectXGame
 		{
 			ResetLives();
 			ResetPlanes();
-			// Enable the game
-			// TODO Handle total time
-			//mCurrentTime = 0;
+			mGameTime = 0;
 			mEndGameScreen->GetSprite()->Disable();
 			mGameIsRunning = true;
 		}
@@ -186,7 +186,7 @@ namespace DirectXGame
 		mEndGameScreen->GetSprite()->SetSprite(SpriteName::GameEnd);
 	}
 
-	void GameManager::PlanesUpdate(const DX::StepTimer& timer)
+	void GameManager::PlanesUpdate()
 	{
 		// Check if all planes are ready for respawning.
 		auto it = mPlanesPlayerA.begin();
@@ -216,7 +216,7 @@ namespace DirectXGame
 			{
 				DecrementHealth(PlayerEnum::PlayerA);
 			}
-			(*it)->Respawn(timer);
+			(*it)->Respawn(mGameTime);
 		}
 
 		it = mPlanesPlayerA.begin();
@@ -227,7 +227,7 @@ namespace DirectXGame
 			{
 				DecrementHealth(PlayerEnum::PlayerB);
 			}
-			(*it)->Respawn(timer);
+			(*it)->Respawn(mGameTime);
 		}
 	}
 

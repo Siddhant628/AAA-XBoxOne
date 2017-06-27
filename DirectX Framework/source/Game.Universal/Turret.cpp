@@ -2,6 +2,7 @@
 #include "Turret.h"
 #include "SpriteManager.h"
 #include "GameManager.h"
+#include "InputManager.h"
 
 namespace DirectXGame
 {
@@ -18,13 +19,13 @@ namespace DirectXGame
 	const std::float_t Turret::sLeftRotationEnd = 5.0f;
 	const std::float_t Turret::sRightRotationEnd = 45.0f;
 
-	// TODO Add player to input manager
+	// TODO Test call to input manager.
 	Turret::Turret(PlayerEnum turretPlayer)
 	{
 		InitializeMembers(turretPlayer);
 		AttachSprite();
 		GetSprite()->SetSprite(SpriteName::Turret);
-		//InputManager::GetInstance()->AddPlayer(*this);
+		InputManager::GetInstance()->AddPlayer(*this);
 	}
 
 	void Turret::Update(const DX::StepTimer & timer)

@@ -45,6 +45,7 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Turret.h" />
+    <ClInclude Include="InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

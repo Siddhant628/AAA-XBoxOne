@@ -36,9 +36,8 @@ namespace DirectXGame
 		std::shared_ptr<DX::DeviceResources> mDeviceResources;
 		std::vector<std::shared_ptr<DX::GameComponent>> mComponents;
 		DX::StepTimer mTimer;
-		std::shared_ptr<DX::KeyboardComponent> mKeyboard;
-		std::shared_ptr<DX::MouseComponent> mMouse;
-		std::shared_ptr<DX::GamePadComponent> mGamePad;
 		std::shared_ptr<SpriteManager> mSpriteManager;
+		std::shared_ptr<DX::GamePadComponent> mGamePad;
+		std::shared_ptr<DX::GamePadComponent> mGamePad2;
 	};
 }

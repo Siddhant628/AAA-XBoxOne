@@ -7,6 +7,7 @@
 #include "KeyboardComponent.h"
 #include "MouseComponent.h"
 #include "GamePadComponent.h"
+#include "InputManager.h"
 
 using namespace DX;
 using namespace std;
@@ -26,23 +27,17 @@ namespace DirectXGame
 		// Register to be notified if the Device is lost or recreated
 		mDeviceResources->RegisterDeviceNotify(this);
 
-		
-		
 		auto camera = make_shared<OrthographicCamera>(mDeviceResources, 1024.0f, 768.0f);
 		mComponents.push_back(camera);
 		camera->SetPosition(0, 0, 1);
 
 		CoreWindow^ window = CoreWindow::GetForCurrentThread();
-		mKeyboard = make_shared<KeyboardComponent>(mDeviceResources);		
-		mKeyboard->Keyboard()->SetWindow(window);
-		mComponents.push_back(mKeyboard);
-
-		mMouse = make_shared<MouseComponent>(mDeviceResources);		
-		mMouse->Mouse()->SetWindow(window);
-		mComponents.push_back(mMouse);
 
 		mGamePad = make_shared<GamePadComponent>(mDeviceResources);
 		mComponents.push_back(mGamePad);
+
+		mGamePad2 = make_shared<GamePadComponent>(mDeviceResources);
+		mComponents.push_back(mGamePad2);
 
 		auto fpsTextRenderer = make_shared<FpsTextRenderer>(mDeviceResources);
 		mComponents.push_back(fpsTextRenderer);
@@ -54,11 +49,14 @@ namespace DirectXGame
 		mTimer.SetTargetElapsedSeconds(1.0 / 60);
 
 		GameObjectManager::CreateInstance();
+		InputManager::CreateInstance();
 		GameManager::CreateInstance();
 		
+		InputManager::GetInstance()->SetGamePads(*mGamePad, *mGamePad2);
 		GameManager::SetSpriteManager(*mSpriteManager);
 
 		GameObjectManager::GetInstance()->Initialize();
+		InputManager::GetInstance()->Initialize();
 		GameManager::GetInstance()->Initialize();
 
 		
@@ -90,11 +88,14 @@ namespace DirectXGame
 				component->Update(mTimer);	
 			}
 			GameObjectManager::GetInstance()->Update(mTimer);
+			InputManager::GetInstance()->Update(mTimer);
 			GameManager::GetInstance()->Update(mTimer);
 
-			if (mKeyboard->WasKeyPressedThisFrame(Keys::Escape) ||
-				mMouse->WasButtonPressedThisFrame(MouseButtons::Middle) ||
-				mGamePad->WasButtonPressedThisFrame(GamePadButtons::Back))
+			if (mGamePad->WasButtonPressedThisFrame(GamePadButtons::Back))
+			{
+				CoreApplication::Exit();
+			}
+			if (mGamePad2->WasButtonPressedThisFrame(GamePadButtons::Back))
 			{
 				CoreApplication::Exit();
 			}
@@ -143,6 +144,7 @@ namespace DirectXGame
 	{
 		GameObjectManager::GetInstance()->Shutdown();
 		GameManager::GetInstance()->Shutdown();
+		InputManager::GetInstance()->Shutdown();
 
 		for (auto& component : mComponents)
 		{
@@ -150,11 +152,14 @@ namespace DirectXGame
 		}
 	}
 
+	// TODO Handle input manager pointers being restored.
+
 	// Notifies renderers that device resources may now be recreated.
 	void GameMain::OnDeviceRestored()
 	{
 		GameObjectManager::CreateInstance();
-		
+		InputManager::CreateInstance();
+
 		GameManager::CreateInstance();
 		GameManager::SetSpriteManager(*mSpriteManager);
 

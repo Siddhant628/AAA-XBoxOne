@@ -28,7 +28,7 @@ namespace DirectXGame
 		*/
 		~Plane() = default;
 
-		void Respawn(const DX::StepTimer& timer);
+		void Respawn(const double& totalTime);
 		/**
 		* Update method for each frame.
 		*/
@@ -69,7 +69,7 @@ namespace DirectXGame
 		/**
 		* Get the speed with which a plabe should be respawned.
 		*/
-		std::float_t GetSpeed(const DX::StepTimer& timer);
+		std::float_t GetSpeed(const double& totalTime);
 		/**
 		* The spawn position of this plane along X.
 		*/
