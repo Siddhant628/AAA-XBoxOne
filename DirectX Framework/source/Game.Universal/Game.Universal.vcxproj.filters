@@ -43,6 +43,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

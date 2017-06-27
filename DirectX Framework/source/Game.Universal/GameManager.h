@@ -61,15 +61,16 @@ namespace DirectXGame
 		void RegisterPlane(Plane& plane);
 
 		bool IsGameRunning();
-		///**
-		//* Request the game manager to restart the game.
-		//*/
-		//void RestartGame();
+		/**
+		* Request the game manager to restart the game.
+		*/
+		void RestartGame();
 	private:
 		/**
 		* Private constructor for singleton.
 		*/
 		GameManager();
+
 		/**
 		* Pointer to the singleton.
 		*/
@@ -160,13 +161,6 @@ namespace DirectXGame
 		* A pointer to the game object loaded at the end of the game.
 		*/
 		DirectXGame::GameObject* mEndGameScreen;
-		
-		
-		
-		/**
-		* The amount of time passed since the start of the game.
-		*/
-		//DWORD mCurrentTime;
 
 		//// Background sprite related variables.
 		//static const std::string sBackgroundSpritePath;

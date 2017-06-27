@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "SpriteManager.h"
 #include "Plane.h"
+#include "Bullet.h"
 
 #include <cassert>
 
@@ -35,6 +36,16 @@ namespace DirectXGame
 		new Plane(Plane::PlaneID::PlaneB_2);
 	}
 
+	void GameManager::LoadBullets()
+	{
+		new Bullet(Bullet::BulletOwner::PlayerA);
+		new Bullet(Bullet::BulletOwner::PlayerA);
+		new Bullet(Bullet::BulletOwner::PlayerA);
+		new Bullet(Bullet::BulletOwner::PlayerB);
+		new Bullet(Bullet::BulletOwner::PlayerB);
+		new Bullet(Bullet::BulletOwner::PlayerB);
+	}
+
 	GameManager* GameManager::CreateInstance()
 	{
 		if (!sInstance)
@@ -52,6 +63,7 @@ namespace DirectXGame
 	// TODO Implement
 	void GameManager::Initialize()
 	{
+		LoadBullets();
 		LoadPlanes();
 		LoadBackground();
 	}
