@@ -259,34 +259,6 @@ namespace DirectXGame
 
 	void SpriteManager::InitializeSprites()
 	{
-		//const XMFLOAT2 neighborOffset(2.0f, 2.0f);
-		//for (uint32_t column = 0; column < mSpriteColumnCount; ++column)		
-		//{
-		//	for (uint32_t row = 0; row < mSpriteRowCount; ++row)
-		//	{
-		//		XMFLOAT2 position(mPosition.x + column * neighborOffset.x * 3, mPosition.y + row * neighborOffset.y * 3);
-		//		Transform2D transform(position, 0.0f, XMFLOAT2(3.0f, 3.0f));
-		//		auto sprite = make_shared<Sprite>(transform);
-		//		
-		//		XMFLOAT4X4 textureTransform;
-		//		XMMATRIX textureTransformMatrix = XMMatrixScaling(UVScalingFactor.x, UVScalingFactor.y, 0) * XMMatrixTranslation(UVScalingFactor.x * 2, UVScalingFactor.y * 1, 0.0f);
-		//		XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
-		//		sprite->SetTextureTransform(textureTransform);
-		//		
-		//		mSprites.push_back(move(sprite));
-		//	}
-		//}
-		//Transform2D transform;
-		//transform.SetScale(sSpriteData.at(SpriteName::Background).DefaultScale);
-		//auto sprite = new Sprite(transform);
-
-		//XMFLOAT4X4 textureTransform;
-		//XMMATRIX textureTransformMatrix = XMMatrixScaling(1.0f, 1.0f, 0);
-		//XMStoreFloat4x4(&textureTransform, textureTransformMatrix);
-
-		//sprite->SetTextureTransform(textureTransform);
-		//mSprites.push_back(move(sprite));
-
 		for (auto it = mSprites.begin(); it != mSprites.end(); ++it)
 		{
 			Transform2D transform;
