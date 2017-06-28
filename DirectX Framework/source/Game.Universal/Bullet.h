@@ -38,8 +38,7 @@ namespace DirectXGame
 		*/
 		static void Fire(std::float_t angle, BulletOwner owner);
 
-		// TODO Implement
-		//virtual void InCollision(Engine::Collider& otherCollider) override;
+		virtual void InCollision(Collider& otherCollider) override;
 
 	private:
 		/**
@@ -118,10 +117,10 @@ namespace DirectXGame
 		/**
 		* Collider related data.
 		*/
-		//static const std::float_t sColliderOffsetX;
-		//static const std::float_t sColliderOffsetY;
-		//static const std::uint32_t sColliderWidth;
-		//static const std::uint32_t sColliderHeight;
+		static const std::float_t sColliderOffsetX;
+		static const std::float_t sColliderOffsetY;
+		static const std::uint32_t sColliderWidth;
+		static const std::uint32_t sColliderHeight;
 	public:
 		/**
 		* Bullet related data.

@@ -49,22 +49,6 @@ namespace DirectXGame
 		mDeleteQueue.push_back(&gameObject);
 	}
 
-	void GameObjectManager::Render()
-	{
-		std::vector<GameObject*>::iterator it = mGameObjects.begin();
-		std::vector<GameObject*>::iterator end = mGameObjects.end();
-
-		// TODO Remove since SpriteManager will handle this.
-		//for (; it != end; ++it)
-		//{
-		//	Sprite* sprite = (*it)->GetSprite();
-		//	if (sprite)
-		//	{
-		//		sprite->Render();
-		//	}
-		//}
-	}
-
 	void GameObjectManager::Shutdown()
 	{
 		std::vector<GameObject*>::iterator it = mGameObjects.begin();

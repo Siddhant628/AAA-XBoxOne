@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Bullet.h"
 #include "SpriteManager.h"
+#include "Collider.h"
 
 namespace DirectXGame
 {
@@ -10,12 +11,15 @@ namespace DirectXGame
 	const std::float_t Bullet::sSpawnPositionPlayerBX = 512 - 128 - 3;
 	const std::float_t Bullet::sSpawnPositionPlayerBY = -384 + 47 + 3;
 
+	const float_t Bullet::sColliderOffsetX = -3;
+	const float_t Bullet::sColliderOffsetY = -3;
+	const uint32_t Bullet::sColliderWidth = 6;
+	const uint32_t Bullet::sColliderHeight = 6;
+
 	const std::uint32_t Bullet::sMaxBulletCount = 3;
 	const std::float_t Bullet::sBulletSpeed = 520.0f;
-	// TODO Understand
 	const std::float_t Bullet::sFiringAngleOffset = 65.0f;
 	const std::float_t Bullet::sBulletReloadTime = 1;
-	// TODO Test
 	const std::float_t Bullet::sMaxBulletHeight = 384 + 3;
 	const double Bullet::sPI = 3.14159265;
 
@@ -26,10 +30,9 @@ namespace DirectXGame
 	double Bullet::sTimeSpentReloadingA = 0;
 	double Bullet::sTimeSpentReloadingB = 0;
 
-	// TODO Attach collider
 	Bullet::Bullet(BulletOwner owner) : mCanBeFired(true)
 	{
-		//AttachCollider(sColliderWidth, sColliderHeight, sColliderOffsetX, sColliderOffsetY);
+		AttachCollider(sColliderWidth, sColliderHeight, sColliderOffsetX, sColliderOffsetY);
 		InitializeMembers(owner);
 		AttachSprite();
 		GetSprite()->SetSprite(SpriteName::Bullet);
@@ -42,7 +45,6 @@ namespace DirectXGame
 		Reload(timer);
 	}
 	
-	// TODO Test
 	void Bullet::Fire(std::float_t angle, BulletOwner owner)
 	{
 		if (owner == BulletOwner::PlayerA)
@@ -78,6 +80,18 @@ namespace DirectXGame
 					}
 				}
 			}
+		}
+	}
+
+	void Bullet::InCollision(Collider& otherCollider)
+	{
+		if (mOwnerPlayer == BulletOwner::PlayerB && otherCollider.GetColliderTag() == Collider::ColliderTag::Player_A_Plane)
+		{
+			ResetBullet();
+		}
+		else if (mOwnerPlayer == BulletOwner::PlayerA && otherCollider.GetColliderTag() == Collider::ColliderTag::Player_B_Plane)
+		{
+			ResetBullet();
 		}
 	}
 
@@ -119,7 +133,6 @@ namespace DirectXGame
 		SetPosition(mSpawnPositionX, mSpawnPositionY);
 	}
 
-	// TODO Set collider tag
 	void Bullet::InitializeMembers(BulletOwner owner)
 	{
 		switch (owner)
@@ -130,7 +143,7 @@ namespace DirectXGame
 			mSpawnPositionY = sSpawnPositionPlayerAY;
 			mTransform.SetPosition(mSpawnPositionX, mSpawnPositionY);
 			sPlayerABullets.push_back(this);
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Bullet);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Bullet);
 			break;
 		case Bullet::BulletOwner::PlayerB:
 			mOwnerPlayer = BulletOwner::PlayerB;
@@ -138,7 +151,7 @@ namespace DirectXGame
 			mSpawnPositionY = sSpawnPositionPlayerBY;
 			mTransform.SetPosition(mSpawnPositionX, mSpawnPositionY);
 			sPlayerBBullets.push_back(this);
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Bullet);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Bullet);
 			break;
 		default:
 			break;

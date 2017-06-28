@@ -43,10 +43,6 @@ namespace DirectXGame
 		*/
 		void Unregister(GameObject& gameObject);
 		/**
-		* Iterate over all the game objects and render their sprites.
-		*/
-		void Render();
-		/**
 		* Clear the memory allocated to the singleton.
 		*/
 		void Shutdown();

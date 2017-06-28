@@ -2,6 +2,7 @@
 #include "Plane.h"
 #include "SpriteManager.h"
 #include "GameManager.h"
+#include "Collider.h"
 
 namespace DirectXGame
 {
@@ -16,15 +17,20 @@ namespace DirectXGame
 	const std::float_t Plane::sMinSpawnPositionVarianceY = 5.0f;
 	const std::float_t Plane::sMaxSpawnPositionVarianceY = 50.0f;
 
+	const float_t Plane::sColliderOffsetX = -50;
+	const float_t Plane::sColliderOffsetY = -26 + 20;
+	const uint32_t Plane::sColliderWidth = 100;
+	const uint32_t Plane::sColliderHeight = 31;
+
 	const std::float_t Plane::sMinimumSpeed = 200.0f;
 	const std::float_t Plane::sMaximumSpeed = 300.0f;
 	const std::float_t Plane::sMinimumSpeedVariance = 25.0f;
 	const std::float_t Plane::sMaximumSpeedVariance = 65.0f;
 	const std::float_t Plane::sTimeForMaximumSpeed = 60.0f;
 
-	// TODO Attach collider
 	Plane::Plane(PlaneID id)
 	{
+		AttachCollider(sColliderWidth, sColliderHeight, sColliderOffsetX, sColliderOffsetY);
 		InitializeMembers(id);
 		AttachSprite();
 		if (id == PlaneID::PlaneA_1 || id == PlaneID::PlaneA_2)
@@ -45,9 +51,21 @@ namespace DirectXGame
 		SetPosition(mSpawnPositionX, mSpawnPositionY + GetRangedRandom(sMinSpawnPositionVarianceY, sMaxSpawnPositionVarianceY) - sMaxSpawnPositionVarianceY / 2);
 	}
 
-	void Plane::Update(const DX::StepTimer & timer)
+	void Plane::Update(const DX::StepTimer& timer)
 	{
 		GameObject::Update(timer);
+	}
+
+	void Plane::InCollision(Collider& otherCollider)
+	{
+		if (otherCollider.GetColliderTag() == Collider::ColliderTag::Player_B_Bullet && mCollider->GetColliderTag() == Collider::ColliderTag::Player_A_Plane)
+		{
+			ShotDown();
+		}
+		else if (otherCollider.GetColliderTag() == Collider::ColliderTag::Player_A_Bullet && mCollider->GetColliderTag() == Collider::ColliderTag::Player_B_Plane)
+		{
+			ShotDown();
+		}
 	}
 
 	void Plane::ResetPlane()
@@ -81,7 +99,6 @@ namespace DirectXGame
 		return r1;
 	}
 
-	// TODO Set collider tags
 	void Plane::InitializeMembers(PlaneID planeID)
 	{
 		mPlaneID = planeID;
@@ -91,22 +108,22 @@ namespace DirectXGame
 		case PlaneID::PlaneA_1:
 			mSpawnPositionX = sSpawnPositionA1X;
 			mSpawnPositionY = sSpawnPositionA1Y;
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Plane);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Plane);
 			break;
 		case PlaneID::PlaneA_2:
 			mSpawnPositionX = sSpawnPositionA2X;
 			mSpawnPositionY = sSpawnPositionA2Y;
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Plane);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_A_Plane);
 			break;
 		case PlaneID::PlaneB_1:
 			mSpawnPositionX = sSpawnPositionB1X;
 			mSpawnPositionY = sSpawnPositionB1Y;
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Plane);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Plane);
 			break;
 		case PlaneID::PlaneB_2:
 			mSpawnPositionX = sSpawnPositionB2X;
 			mSpawnPositionY = sSpawnPositionB2Y;
-			//GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Plane);
+			GetCollider()->SetColliderTag(Collider::ColliderTag::Player_B_Plane);
 			break;
 		}
 	}

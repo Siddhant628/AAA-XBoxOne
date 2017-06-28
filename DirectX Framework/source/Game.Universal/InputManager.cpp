@@ -5,7 +5,7 @@
 #include "Turret.h"
 #include "Bullet.h"
 
-#define DISABLE_ROTATE_ON_FIRE 0
+#define DISABLE_ROTATE_ON_FIRE 1
 
 using namespace DX;
 

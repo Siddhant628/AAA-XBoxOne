@@ -26,7 +26,6 @@ namespace DirectXGame
 
 	GameManager* GameManager::sInstance = nullptr;
 
-	// TODO Implement
 	GameManager::GameManager() :
 		mGameIsRunning(true),
 		mSpriteManager(nullptr),

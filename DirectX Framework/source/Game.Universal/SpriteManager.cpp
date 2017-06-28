@@ -42,7 +42,6 @@ namespace DirectXGame
 		mPosition = position;
 	}
 
-	// TODO Use a static hashmap to load all the sprites
 	void SpriteManager::CreateDeviceDependentResources()
 	{
 		auto loadVSTask = ReadDataAsync(L"SpriteRendererVS.cso");

@@ -6,12 +6,11 @@
 
 namespace DirectXGame
 {
-	const std::float_t Turret::sTurretAPositionX = -512 + 127;
+	const std::float_t Turret::sTurretAPositionX = -512 + 127 - 1;
 	const std::float_t Turret::sTurretAPositionY = -384 + 50;
-	const std::float_t Turret::sTurretBPositionX = 512 - 127;
+	const std::float_t Turret::sTurretBPositionX = 512 - 127 - 5;
 	const std::float_t Turret::sTurretBPositionY = -384 + 50;
 
-	// TODO Check all rotation values and speed
 	const std::float_t Turret::sRotationTurretA = 5.0f;
 	const std::float_t Turret::sRotationTurretB = 45.0f;
 
@@ -19,7 +18,6 @@ namespace DirectXGame
 	const std::float_t Turret::sLeftRotationEnd = 5.0f;
 	const std::float_t Turret::sRightRotationEnd = 45.0f;
 
-	// TODO Test call to input manager.
 	Turret::Turret(PlayerEnum turretPlayer)
 	{
 		InitializeMembers(turretPlayer);

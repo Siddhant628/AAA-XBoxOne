@@ -34,8 +34,7 @@ namespace DirectXGame
 		*/
 		virtual void Update(const DX::StepTimer& timer) override;
 
-		// TODO Implement
-		//virtual void InCollision(Engine::Collider& otherCollider) override;
+		virtual void InCollision(Collider& otherCollider) override;
 		
 		/**
 		* Reset the plane to its spawn position with 0 velocity.
@@ -99,22 +98,10 @@ namespace DirectXGame
 		/**
 		* Collider related data.
 		*/
-		//static const float_t sColliderOffsetX;
-		//static const float_t sColliderOffsetY;
-		//static const uint32_t sColliderWidth;
-		//static const uint32_t sColliderHeight;
-		/**
-		* File paths for plane sprites.
-		*/
-		//static const std::string sSpritePathPlaneA;
-		//static const std::string sSpritePathPlaneB;
-		/**
-		* Dimensions of sprites.
-		*/
-		//static const uint32_t sWidthPlaneA;
-		//static const uint32_t sHeightPlaneA;
-		//static const uint32_t sWidthPlaneB;
-		//static const uint32_t sHeightPlaneB;
+		static const float_t sColliderOffsetX;
+		static const float_t sColliderOffsetY;
+		static const uint32_t sColliderWidth;
+		static const uint32_t sColliderHeight;
 		/**
 		* Mean speeds of planes along x-axis.
 		*/
